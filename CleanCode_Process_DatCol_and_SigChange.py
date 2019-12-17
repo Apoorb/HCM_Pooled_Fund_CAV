@@ -33,8 +33,8 @@ from scipy.stats import sem, t
 from scipy import mean
 
 from scipy import stats
-#os.chdir(r'C:\Users\abibeka\OneDrive - Kittelson & Associates, Inc\Documents\HCM-CAV-Pooled-Fund\VissimBaseModel')
-os.chdir(r'H:\22\22398 - CAV in HCM Pooled Fund Study\Task4-ScenarioTesting\Base VISSIM Models\Arterial_Model\VissimBaseModel')
+#os.chdir(r'H:\22\22398 - CAV in HCM Pooled Fund Study\Task4-ScenarioTesting\Base VISSIM Models\Arterial_Model\VissimBaseModel')
+os.chdir(r'C:\Users\abibeka\OneDrive - Kittelson & Associates, Inc\Documents\HCM-CAV-Pooled-Fund')
 os.getcwd()
 
 # Get the Run # and the File
@@ -58,9 +58,9 @@ else:
 DatColNos = list(map(map1, DatColFiles))
 DatColFilesDict = dict(zip(DatColNos, DatColFiles))
 
-file = SigFiles[9]
+file = SigFiles[0]
 
-file = DatColFiles[9]
+file = DatColFiles[0]
 #****************************************************************************************************************************
 LaneDict = {1:'EBT/R', 2:'EBT', 3:"EBL"}
 ListRes = []
@@ -76,8 +76,9 @@ for RunNum,SigVal in SigFilesDict.items():
     tempDat = MergeDatCol_SigDat(SigDat, DatColDat ,LaneDict, StartVeh = 5, EndVeh =14, RunNum = RunNum)
     ListRes.append(tempDat[0])
     RawDataDict[RunNum] = tempDat[1]
+    RawDataDict[RunNum].loc[:,"RunNo"] = RunNum
     
-    
+RawDat= pd.concat(RawDataDict.values())
 #****************************************************************************************************************************
 FinDat = pd.concat(ListRes)
 FinDat = FinDat.sort_index()
@@ -96,12 +97,13 @@ stats.ttest_1samp(SatFlowVals, 1900 )
 
 # Output data
 if IsResForBase:
-    OutFi = "Results/Base_HeadwaySatFlowRes.xlsx"
+    OutFi = "Results/Default_HeadwaySatFlowRes.xlsx"
 else:
     OutFi = "Results/Calib_HeadwaySatFlowRes.xlsx"
 
 
 writer=pd.ExcelWriter(OutFi)
+RawDat.to_excel(writer, 'RawData',na_rep='-')
 FinDat.to_excel(writer, 'HeadwaySatFlowSummary',na_rep='-')
 FinDatSatFlow.to_excel(writer, 'SatFlowByRun',na_rep='-')
 

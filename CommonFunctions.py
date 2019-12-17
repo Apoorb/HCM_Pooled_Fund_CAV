@@ -107,7 +107,12 @@ def MergeDatCol_SigDat(SigDat_clean, DataColDat_Sub ,LaneDict, StartVeh = 5, End
     CombData = CombData[['CycNum','Lane','LaneDesc','tQueue','t_Entry','G_st','G_end','VehNum','PhaseNum']]
     ###################         Define conditions for Sat Flow         ###########################################
     mask = (CombData.VehNum >= StartVeh) & (CombData.VehNum <= EndVeh) 
+    ## 
     CombData = CombData[mask]
+    
+    # CombData.loc[:,'Headway'] = CombData.groupby(['CycNum','Lane'])['t_Entry'].diff()
+    # mask2 = CombData.Headway<=5
+    # CombData = CombData[mask2]
     CombData = CombData.groupby(['CycNum','LaneDesc']).agg({'t_Entry':['min','max'],'VehNum':['min','max']})
     CombData.columns = ['_'.join(col).strip() for col in CombData.columns.values]
     CombData.loc[:,'AvgHeadway'] = (CombData.t_Entry_max - CombData.t_Entry_min)/(CombData.VehNum_max - CombData.VehNum_min)
