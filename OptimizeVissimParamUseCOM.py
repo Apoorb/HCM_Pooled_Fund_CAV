@@ -23,7 +23,8 @@ Vissim = com.gencache.EnsureDispatch("Vissim.Vissim.11") # Vissim 11
 # Load Network
 #==========================================================================
 # 5 runs 
-Path_to_VissimFile = r'H:\22\22398 - CAV in HCM Pooled Fund Study\Task4-ScenarioTesting\Base VISSIM Models\Arterial_Model\VissimBaseModel'
+# Path_to_VissimFile = r'H:\22\22398 - CAV in HCM Pooled Fund Study\Task4-ScenarioTesting\Base VISSIM Models\Arterial_Model\VissimBaseModel'
+Path_to_VissimFile = r'C:\Users\abibeka\OneDrive - Kittelson & Associates, Inc\Documents\HCM-CAV-Pooled-Fund\VissimBaseModel'
 os.getcwd()
 Filename = Path_to_VissimFile +"\\VissimBaseModel_Calibration - V2.inpx"
 layoutFile=Filename.replace(".inpx",".layx")
@@ -66,10 +67,10 @@ Vissim.Net.DrivingBehaviors.ItemByKey(DriverBehavNum).AttValue('W74bxMult')
 # Simulation
 #==========================================================================
 # 10 runs 
-NewVolumes = [1800,1900,2000,2200]
+NewVolumes = [1600,1800,1900,2000,2200]
 NewVol = 2000
 FileNm = "VissimBaseModel_Calibration_VolIs 2001 - V2"
-FileDir = r'H:\22\22398 - CAV in HCM Pooled Fund Study\Task4-ScenarioTesting\Base VISSIM Models\Arterial_Model\VissimBaseModel\ExtraRuns'
+FileDir = Path_to_VissimFile+'\\ExtraRuns'
 for NewVol in NewVolumes:
     FileNm = SetStudyApproachVol(NewVol)
     Vissim.Simulation.SetAttValue('NumRuns', 10)
