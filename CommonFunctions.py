@@ -83,7 +83,7 @@ def ProcessDatCol(file ,LaneDict):
     DataColDat_Sub.loc[:,'LaneDesc'] = DataColDat_Sub.Lane.apply(lambda x: LaneDict[x])
     return(DataColDat_Sub)
     
-def MergeDatCol_SigDat(SigDat_clean, DataColDat_Sub ,LaneDict, StartVeh = 5, EndVeh =14, RunNum=99):
+def MergeDatCol_SigDat(SigDat_clean, DataColDat_Sub ,LaneDict, StartVeh = 4, EndVeh =14, RunNum=99):
     '''
     Merge Signal and Data col 
     '''
@@ -106,21 +106,23 @@ def MergeDatCol_SigDat(SigDat_clean, DataColDat_Sub ,LaneDict, StartVeh = 5, End
     CombData.loc[:,'VehNum'] = np.hstack(CombData.groupby(['CycNum','Lane'])['t_Entry'].apply(lambda x: np.arange(1,len(x)+1)).values)
     CombData = CombData[['CycNum','Lane','LaneDesc','tQueue','t_Entry','G_st','G_end','VehNum','PhaseNum']]
     ###################         Define conditions for Sat Flow         ###########################################
-    mask = (CombData.VehNum >= StartVeh) & (CombData.VehNum <= EndVeh) 
+    mask_SatFlow = (CombData.VehNum >= StartVeh) & (CombData.VehNum <= EndVeh) #Start vehicle is 4th (timeStamp for 4th vehicle is used for 5th vehicle)
+    #mask_Headway = (CombData.VehNum >= StartVeh+1) & (CombData.VehNum <= EndVeh) # Start vehicle is 5th as we are directly getting the headway
+
     ## 
-    CombData = CombData[mask]
-    
-    # CombData.loc[:,'Headway'] = CombData.groupby(['CycNum','Lane'])['t_Entry'].diff()
-    # mask2 = CombData.Headway<=5
-    # CombData = CombData[mask2]
-    CombData = CombData.groupby(['CycNum','LaneDesc']).agg({'t_Entry':['min','max'],'VehNum':['min','max']})
-    CombData.columns = ['_'.join(col).strip() for col in CombData.columns.values]
-    CombData.loc[:,'AvgHeadway'] = (CombData.t_Entry_max - CombData.t_Entry_min)/(CombData.VehNum_max - CombData.VehNum_min)
-    CombData.reset_index(drop = False, inplace =True)
-    CombDataSum = CombData.groupby(['LaneDesc'])['AvgHeadway'].describe()
+    CombData_SatFlow = CombData[mask_SatFlow]
+    CombData_Headway = CombData.copy()
+    CombData_Headway.loc[:,'Headway'] = CombData_Headway.groupby(['CycNum','Lane'])['t_Entry'].diff()
+    # mask2 = CombData_Headway.Headway<=5
+    # CombData_Headway = CombData_Headway[mask2]
+    CombData_SatFlow = CombData_SatFlow.groupby(['CycNum','LaneDesc']).agg({'t_Entry':['min','max'],'VehNum':['min','max']})
+    CombData_SatFlow.columns = ['_'.join(col).strip() for col in CombData_SatFlow.columns.values]
+    CombData_SatFlow.loc[:,'AvgHeadway'] = (CombData_SatFlow.t_Entry_max - CombData_SatFlow.t_Entry_min)/(CombData_SatFlow.VehNum_max - CombData_SatFlow.VehNum_min)
+    CombData_SatFlow.reset_index(drop = False, inplace =True)
+    CombDataSum = CombData_SatFlow.groupby(['LaneDesc'])['AvgHeadway'].describe()
     CombDataSum.loc[:,'SatFlow'] = np.floor(3600/ CombDataSum['mean'])
     CombDataSum.loc[:,'RunNum'] = RunNum
-    return(CombDataSum, CombData)
+    return(CombDataSum, CombData_SatFlow,CombData_Headway)
     
 
 def MultiVISSIM_RunResProcess(CommonFileNmWithoutINPX, NewVol, FileDir1):
@@ -149,7 +151,7 @@ def MultiVISSIM_RunResProcess(CommonFileNmWithoutINPX, NewVol, FileDir1):
         SigDataDict[RunNum] = SigDat
         DatColDat = ProcessDatCol(DatColFilesDict[RunNum],LaneDict)
         DataColDataDict[RunNum] = DatColDat
-        tempDat = MergeDatCol_SigDat(SigDat, DatColDat ,LaneDict, StartVeh = 5, EndVeh =14, RunNum = RunNum)
+        tempDat = MergeDatCol_SigDat(SigDat, DatColDat ,LaneDict, StartVeh = 4, EndVeh =14, RunNum = RunNum)
         ListRes.append(tempDat[0])
         RawDataDict[RunNum] = tempDat[1]
     #****************************************************************************************************************************

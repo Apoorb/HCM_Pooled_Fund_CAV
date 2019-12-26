@@ -31,10 +31,10 @@ import statsmodels.stats.api as sms
 import statsmodels.stats.weightstats
 from scipy.stats import sem, t
 from scipy import mean
-
 from scipy import stats
+import subprocess
 #os.chdir(r'H:\22\22398 - CAV in HCM Pooled Fund Study\Task4-ScenarioTesting\Base VISSIM Models\Arterial_Model\VissimBaseModel')
-os.chdir(r'C:\Users\abibeka\OneDrive - Kittelson & Associates, Inc\Documents\HCM-CAV-Pooled-Fund')
+os.chdir(r'C:\Users\abibeka\OneDrive - Kittelson & Associates, Inc\Documents\HCM-CAV-Pooled-Fund\VissimBaseModel')
 os.getcwd()
 
 # Get the Run # and the File
@@ -67,18 +67,22 @@ ListRes = []
 SigDataDict = {}
 DataColDataDict = {}
 RawDataDict = {}
+RawDataDict2 = {}
 for RunNum,SigVal in SigFilesDict.items():
     print(RunNum,SigVal,DatColFilesDict[RunNum])
     SigDat = ProcessSigTime(SigVal) 
     SigDataDict[RunNum] = SigDat
     DatColDat = ProcessDatCol(DatColFilesDict[RunNum],LaneDict)
     DataColDataDict[RunNum] = DatColDat
-    tempDat = MergeDatCol_SigDat(SigDat, DatColDat ,LaneDict, StartVeh = 5, EndVeh =14, RunNum = RunNum)
+    tempDat = MergeDatCol_SigDat(SigDat, DatColDat ,LaneDict, StartVeh = 4, EndVeh =14, RunNum = RunNum)
     ListRes.append(tempDat[0])
     RawDataDict[RunNum] = tempDat[1]
+    RawDataDict2[RunNum] = tempDat[2]
     RawDataDict[RunNum].loc[:,"RunNo"] = RunNum
+    RawDataDict2[RunNum].loc[:,"RunNo"] = RunNum
     
 RawDat= pd.concat(RawDataDict.values())
+RawDat2= pd.concat(RawDataDict2.values())
 #****************************************************************************************************************************
 FinDat = pd.concat(ListRes)
 FinDat = FinDat.sort_index()
@@ -109,4 +113,5 @@ FinDatSatFlow.to_excel(writer, 'SatFlowByRun',na_rep='-')
 
 writer.save() #****************************************************************************************************************************
 
+#subprocess.Popen([OutFi],shell=True)  
 
