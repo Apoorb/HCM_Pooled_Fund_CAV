@@ -94,12 +94,16 @@ def MergeDatCol_SigDat(SigDat_clean, DataColDat_Sub ,LaneDict, StartVeh = 4, End
     CombData_Ln_Dict = {}
     for Ln in (LaneDict.keys()):
         CombData_Ln_Dict[Ln] = pd.merge_asof(DataColDat_Sub[DataColDat_Sub.Lane==Ln],SigDat_clean, left_on='t_Entry', right_on= 'G_st',direction = 'backward')
-        assert(max(CombData_Ln_Dict[Ln].t_Entry -CombData_Ln_Dict[Ln].G_st) < 50) #Make sure you don't merge vehs to a diff cycle
+        #***********************Reactivate Later**********************************#
+        #assert(max(CombData_Ln_Dict[Ln].t_Entry -CombData_Ln_Dict[Ln].G_st) < 50) #Make sure you don't merge vehs to a diff cycle
         
         # Check the vehicles that eneter the intersection during Amber Indication 
         CombData_Ln_Dict[Ln].loc[:,'VehinAmber'] = CombData_Ln_Dict[Ln].t_Entry > CombData_Ln_Dict[Ln].G_end
 
-    CombData = pd.concat(CombData_Ln_Dict.values())
+    # #Debug:
+    # Ln =1
+    # CombData_Ln_Dict[Ln].loc[:,"Debug"] = CombData_Ln_Dict[Ln].t_Entry -CombData_Ln_Dict[Ln].G_st
+    # CombData = pd.concat(CombData_Ln_Dict.values())
     # Get the vehicle numbers
     CombData.sort_values(['CycNum','Lane'],inplace=True)
     # Get length of each group and then use arange 
