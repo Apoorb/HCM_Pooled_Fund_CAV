@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 Created on Fri Dec 13 08:59:32 2019
-Purpose : Signal timing and data col
+Purpose : Signal timing and data col ---Calibration
 @author: abibeka
 """
 
@@ -36,6 +36,9 @@ import subprocess
 #os.chdir(r'H:\22\22398 - CAV in HCM Pooled Fund Study\Task4-ScenarioTesting\Base VISSIM Models\Arterial_Model\VissimBaseModel')
 os.chdir(r'C:\Users\abibeka\OneDrive - Kittelson & Associates, Inc\Documents\HCM-CAV-Pooled-Fund\VissimBaseModel')
 os.getcwd()
+MainDir = os.getcwd()
+
+
 
 # Get the Run # and the File
 #****************************************************************************************************************************
@@ -113,5 +116,6 @@ FinDatSatFlow.to_excel(writer, 'SatFlowByRun',na_rep='-')
 
 writer.save() #****************************************************************************************************************************
 
-#subprocess.Popen([OutFi],shell=True)  
+OutFi = os.path.join(MainDir, OutFi)
+subprocess.Popen([OutFi],shell=True)  
 
