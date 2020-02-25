@@ -104,15 +104,21 @@ def PlotData(ReadFileInfo1, VolTimeIntDat, Y_Var, Y_Lab, tittleAddOn, PlotMPR = 
     Data1.loc[:,'TimeInt'] = Data1.TimeInt.str.split("-",n=1,expand =True)[0].astype(int)
     Data1 = Data1.merge(VolTimeIntDat, left_on = "TimeInt",right_on ="IntStart", how= "left")
     if("Test100PerMPR" in PlotMPR):
+        Data1 = Data1[~((Data1.MPR=="Test100PerMPR") & (Data1.TimeInt==300))]
         Data1.loc[Data1.MPR=="Test100PerMPR","Volume"] = 3000
         Data1 = Data1.groupby(['LaneDesc','Volume',"MPR"])[Y_Var].mean().reset_index()
+    Data1 = Data1[Data1.Volume>1000]
     Data1.Volume = pd.Categorical(Data1.Volume)
     Data1.loc[:,Y_Var] =Data1.loc[:,Y_Var].round(2)
     Data1 = Data1[Data1.MPR.isin(PlotMPR)]
     # Correct MPR Labels
     Data1.loc[:,"MPR"] = Data1.MPR.apply(ReLab)
+    
     Data1.rename(columns={Y_Var:Y_Lab, "Volume": "Volume (Veh/hr)","MPR":"Scenario"},inplace=True)
     Data1_EBT = Data1[Data1.LaneDesc =="EBT"]
+    MprCats=["Base Case","20% MPR","40% MPR","60% MPR","80% MPR","100% MPR","100% MPR with 3000 veh/hr EB"]
+    Data1_EBT.Scenario = pd.Categorical(Data1_EBT.Scenario, MprCats, ordered =True)
+    Data1_EBT = Data1_EBT.sort_values(["Volume (Veh/hr)","Scenario"])
     colorScale_Axb = ['rgb(210,210,210)', 'rgb(180,180,180)','rgb(120,120,120)','rgb(100,100,100)','rgb(60,60,60)','rgb(20,20,20)','rgb(0,0,0)']
     # Plot the figure 
     fig = px.bar(Data1_EBT, x = "Volume (Veh/hr)", y = Y_Lab,color ="Scenario",barmode="group", 
@@ -124,7 +130,6 @@ def PlotData(ReadFileInfo1, VolTimeIntDat, Y_Var, Y_Lab, tittleAddOn, PlotMPR = 
 # Read the Data and Add Volume Info --- Startup-Loss
 #****************************************************************************************************************************************
 SheetNm = 'StartUplossDat'
-KeepColumns = ["Avg_StartUpLoss","std_StartUpLoss","Count","MPR"]
 ReadFileInfo = {
     "ExFi1" : x1,
     "ShNm" : SheetNm,
@@ -154,7 +159,7 @@ PlotData(ReadFileInfo1 = ReadFileInfo,
          VolTimeIntDat= VolTimeIntDat,
          Y_Var="End Loss Time",
          Y_Lab ="Average End Loss Time (sec)",
-         tittleAddOn ="Exclusive EBT End Loss Time (sec)")
+         tittleAddOn ="Exclusive EBT End Loss Time")
 
 # Read the Data and Add Volume Info --- Follow-up-Headway
 #****************************************************************************************************************************************
@@ -169,7 +174,7 @@ PlotData(ReadFileInfo1 = ReadFileInfo,
          VolTimeIntDat= VolTimeIntDat,
          Y_Var="Avg_headway",
          Y_Lab ="Average Headway (sec)",
-         tittleAddOn ="Exclusive EBT Headway (sec)")
+         tittleAddOn ="Exclusive EBT Headway")
 
 
 # Test Data
