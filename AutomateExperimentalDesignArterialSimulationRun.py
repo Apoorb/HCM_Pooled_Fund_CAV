@@ -72,7 +72,7 @@ MPR_to_VissimVehCompMap ={
  }
 VehComp = 1
 
-AlreadyRan = ['0PerMPR','100PerMPR']
+AlreadyRan = []
 for MPR in MPR_to_VissimVehCompMap.keys():
     if MPR not in AlreadyRan:
         Nm = SetMPRforVISSIM(MPR)
