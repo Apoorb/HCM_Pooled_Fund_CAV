@@ -99,7 +99,7 @@ def MergeDatCol_SigDat(SigDat_clean, DataColDat_Sub ,LaneDict, StartVeh = 4, End
         
         # Check the vehicles that eneter the intersection during Amber Indication 
         CombData_Ln_Dict[Ln].loc[:,'VehinAmber'] = CombData_Ln_Dict[Ln].t_Entry > CombData_Ln_Dict[Ln].G_end
-
+    CombData = pd.concat(CombData_Ln_Dict.values())
     # #Debug:
     # Ln =1
     # CombData_Ln_Dict[Ln].loc[:,"Debug"] = CombData_Ln_Dict[Ln].t_Entry -CombData_Ln_Dict[Ln].G_st
