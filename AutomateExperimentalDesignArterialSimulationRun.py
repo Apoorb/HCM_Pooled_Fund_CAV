@@ -50,6 +50,13 @@ def SetMPRforVISSIM(MPR="0PerMPR"):
     Nm = "ArtBaseNet_{}".format(MPR)
     return(Nm)
     
+def RunVissimBatchModel():
+    Vissim.Simulation.SetAttValue('NumRuns', 10)
+    Vissim.Simulation.SetAttValue('UseMaxSimSpeed', True)
+    Vissim.Graphics.CurrentNetworkWindow.SetAttValue('QuickMode', True)
+    Vissim.Simulation.RunContinuous()
+    return()
+    
 VI_number   = 1 # VI = Vehicle Input
 Vissim.Net.VehicleInputs.ItemByKey(VI_number).AttValue("VehComp(1)")
 
@@ -65,10 +72,11 @@ MPR_to_VissimVehCompMap ={
  }
 VehComp = 1
 
+AlreadyRan = ['0PerMPR','100PerMPR']
 for MPR in MPR_to_VissimVehCompMap.keys():
-    SetMPRforVISSIM(MPR)
-
-    
+    if MPR not in AlreadyRan:
+        Nm = SetMPRforVISSIM(MPR)
+        RunVissimBatchModel()
 ## ========================================================================
 # End Vissim
 #==========================================================================
