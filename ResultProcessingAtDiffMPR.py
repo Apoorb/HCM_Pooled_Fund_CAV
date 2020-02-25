@@ -33,8 +33,8 @@ MainDir = os.getcwd()
 
 # Get the Run # and the File
 #****************************************************************************************************************************
-MPR_Suffixes = ["0PerMPR","20PerMPR","40PerMPR","80PerMPR","100PerMPR"]
-MPR_Suffixes = ["0PerMPR","100PerMPR"]
+MPR_Suffixes = ["0PerMPR","20PerMPR","40PerMPR","80PerMPR","100PerMPR", "Test100PerMPR"]
+# MPR_Suffixes = ["0PerMPR","100PerMPR"]
 MPR_Level =  "100PerMPR"
 
 # SigDat_clean =SigDat; DataColDat_Sub= DatColDat; StartVeh = 0; EndVeh =14; RunNum = "002"
@@ -77,8 +77,8 @@ def GetPerformanceMeasures(MPR_Level):
     RawDat2= pd.concat(RawDataDict2.values())
     RawDat2.loc[:,'MPR_Level'] = MPR_Level
     StartUplossDat= StartUpLostTimeFun(RawDat2,MPR_Level)
-    EndLossDat= EndLossTimeFun(RawDat2,MPR_Level)
     FollowUpLossDat, NumDataLoss= FollowUpHeadwayFun(RawDat2,MPR_Level)
+    EndLossDat= EndLossTimeFun(RawDat2,MPR_Level,FollowUpLossDat.copy())
     Dat_dataLoss = pd.DataFrame({"MPR_Level":[MPR_Level],"NumRowsRemovedByTQueue":[NumDataLoss]})
     ReturnDatDict ={
         'RawData': RawDat2,
@@ -97,6 +97,7 @@ def StartUpLostTimeFun(Data,MPR_Level):
     StartUpLossTmDat = Data.groupby(['RunNo','Lane','LaneDesc','CycNum'])[['t_Entry','G_st']].min()
     StartUpLossTmDat.loc[:,'StartUpLossTm'] = StartUpLossTmDat.t_Entry - StartUpLossTmDat.G_st
     StartUpLossTmDat.loc[:,'StartUpLossTm'].describe()
+    StartUpLossTmDat = StartUpLossTmDat[StartUpLossTmDat.StartUpLossTm<2.5] #Remove outrageously large values
     cut_bins = list(range(300,12000,900))
     labels = ["{}-{}".format(i,i+900) for i in cut_bins[:-1]]
     StartUpLossTmDat.loc[:,'TimeInt'] = pd.cut(StartUpLossTmDat.t_Entry,bins=cut_bins,labels=labels)
@@ -105,18 +106,34 @@ def StartUpLostTimeFun(Data,MPR_Level):
     return(StartUpLossTmDat)
 #End Loss Time
 #****************************************************************************************************************************
-def EndLossTimeFun(Data,MPR_Level):
+def EndLossTimeFun(Data,MPR_Level,HeadwayDat):
+    '''
+    Data: Raw Data
+    MPR_Level : MPR
+    HeadwayDat: Average headway data
+    '''
     Mask = ((Data.t_Entry - Data.G_end)>0)
     EndLossTime = Data[Mask]
-    EndLossTime = EndLossTime.groupby(['RunNo','Lane','LaneDesc','CycNum'])[['t_Entry','G_end']].max()
-    EndLossTime.loc[:,"SecsAfterAmber"] = EndLossTime.t_Entry - EndLossTime.G_end
-    EndLossTime.loc[:,"SecsAfterAmber"].describe()
-    np.percentile(EndLossTime.loc[:,"SecsAfterAmber"],95)
+    EndLossTime = EndLossTime.groupby(['RunNo','Lane','LaneDesc','CycNum']).agg({"t_Entry":["count","first"]})
+    EndLossTime.columns = ["NumVehInAmber_AllRed","t_Entry"]
+    EndLossTime.loc[:,"NumVehInAmber_AllRed"].describe()
+    np.percentile(EndLossTime.loc[:,"NumVehInAmber_AllRed"],95)
     cut_bins = list(range(300,12000,900))
     labels = ["{}-{}".format(i,i+900) for i in cut_bins[:-1]]
     EndLossTime.loc[:,'TimeInt'] = pd.cut(EndLossTime.t_Entry,bins=cut_bins,labels=labels)
-    EndLossTime = EndLossTime.groupby(['LaneDesc','TimeInt']).agg({'SecsAfterAmber':['mean','std','count']})
+    EndLossTime = EndLossTime.groupby(['LaneDesc','TimeInt']).agg({'NumVehInAmber_AllRed':['mean','std','count']})
     EndLossTime.loc[:,'MPR_Level'] = MPR_Level
+    #Get the End Loss Time
+    HeadwayDat.drop(columns ="MPR_Level",inplace=True)
+    HeadwayDat.columns = HeadwayDat.columns.droplevel(0)
+    HeadwayDat.rename(columns ={"mean":"AvgHeadway"},inplace=True)
+    HeadwayDat.drop(columns = ["std","count"],inplace=True)
+    EndLossTime = EndLossTime.merge(HeadwayDat,left_index=True,right_index=True,how="left")
+    Y_AR = 5 # seconds
+    EndLossTime.rename(columns = {"AvgHeadway":("AvgHeadway","")},inplace=True)
+    EndLossTime.columns = pd.MultiIndex.from_tuples(EndLossTime.columns, names = [None,None])
+    idx=pd.IndexSlice
+    EndLossTime.loc[:,"EndLossTime"] = Y_AR - EndLossTime.AvgHeadway *EndLossTime.loc[:,idx["NumVehInAmber_AllRed","mean"]]
     return(EndLossTime)
 
 #Follow Up Headway
@@ -133,7 +150,8 @@ def FollowUpHeadwayFun(Data,MPR_Level):
     return(HeadwayDat,NumDataLossDuetoTQueue30)    
 
 
-MPR_Suffixes = ["0PerMPR","100PerMPR"]
+# MPR_Suffixes = ["0PerMPR","100PerMPR"]
+MPR_Suffixes = ["0PerMPR","20PerMPR","40PerMPR","80PerMPR","100PerMPR","Test100PerMPR"]
 
 ReturnDatDict ={
     'RawData': pd.DataFrame(),
@@ -155,8 +173,11 @@ for MPR in MPR_Suffixes:
 os.chdir("../Results")
 os.getcwd()
 OutFi = "Results_MPR.xlsx"
+OutFi_plot = "Results_MPR_Plotting.xlsx"
 writer = pd.ExcelWriter(OutFi)
+writer_plot = pd.ExcelWriter(OutFi_plot)
 for key,value in ReturnDatDict.items(): 
+    value.to_excel(writer_plot,key,index=True)
     if (not ((key=="RawData") | (key=="Dat_dataLoss"))):
         dat =value.copy()
         ColNames = ['_'.join(col) if col[1]!="" else col[0] for col in dat.columns]
@@ -168,5 +189,5 @@ for key,value in ReturnDatDict.items():
     else:
         value.to_excel(writer,key,index=True)
 writer.save()
-    
-subprocess.Popen([OutFi],shell=True)  
+writer_plot.save()
+subprocess.Popen([OutFi_plot],shell=True)  
