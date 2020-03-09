@@ -75,7 +75,7 @@ def ReadData(ExcelFile1, SheetName, KeepColumns):
     Data.columns = KeepColumns
     return(Data)    
 
-def PlotData(ReadFileInfo1, VolTimeIntDat, Y_Var, Y_Lab, tittleAddOn, PlotMPR = ["0PerMPR","20PerMPR","40PerMPR","60PerMPR","80PerMPR","100PerMPR","Test100PerMPR"]):
+def PlotData(ReadFileInfo1, VolTimeIntDat, Y_Var, Y_Lab, tittleAddOn, PlotMPR = ["0PerMPR","20PerMPR","40PerMPR","60PerMPR","80PerMPR","100PerMPR"]):
     '''
     
 

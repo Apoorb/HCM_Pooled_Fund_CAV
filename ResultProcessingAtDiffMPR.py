@@ -33,7 +33,7 @@ MainDir = os.getcwd()
 
 # Get the Run # and the File
 #****************************************************************************************************************************
-MPR_Suffixes = ["0PerMPR","20PerMPR","40PerMPR","80PerMPR","100PerMPR", "Test100PerMPR"]
+MPR_Suffixes = ["0PerMPR","20PerMPR","40PerMPR","80PerMPR","100PerMPR"]
 # MPR_Suffixes = ["0PerMPR","100PerMPR"]
 MPR_Level =  "100PerMPR"
 
@@ -139,7 +139,7 @@ def EndLossTimeFun(Data,MPR_Level,HeadwayDat):
 #Follow Up Headway
 #***************************************************************************************************************************
 def FollowUpHeadwayFun(Data,MPR_Level):
-    HeadwayDat = Data[Data.VehNum>=4]
+    HeadwayDat = Data[Data.VehNum>=5] # This would be 5 becuase we are using headway. Not the difference of t_Entry min and max
     Debug = HeadwayDat[HeadwayDat.tQueue< 30]
     NumDataLossDuetoTQueue30 = Debug.shape[0]
     cut_bins = list(range(300,12000,900))
@@ -151,7 +151,7 @@ def FollowUpHeadwayFun(Data,MPR_Level):
 
 
 # MPR_Suffixes = ["0PerMPR","100PerMPR"]
-MPR_Suffixes = ["0PerMPR","20PerMPR","40PerMPR","80PerMPR","100PerMPR","Test100PerMPR"]
+MPR_Suffixes = ["0PerMPR","20PerMPR","40PerMPR","80PerMPR","100PerMPR"]
 
 ReturnDatDict ={
     'RawData': pd.DataFrame(),
