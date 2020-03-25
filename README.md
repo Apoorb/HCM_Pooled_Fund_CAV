@@ -11,3 +11,4 @@
 - AutomateExperimentalDesignArterialSimulationRun.py: Automate VISSIM file creation for different MPR
 - ResultProcessingAtDiffMPR.py: PM for different MPR : 0%, 20%, 40%, 60%, 80% and 100%
 - Plot_DataFrom_ResultsProcessingDiffMPR.py: Plot the start up loss time, headway and Number of veh in Y+AR and end loss time 
+- ResultProcessingAtDiffMPR-Gap-PltSz.py: PM for different Gap: 0.6, 1, 1.2, different PltSize: 1, 2, 5, 10 and MPR : 0%, 20%, 40%, 60%, 80% and 100%
