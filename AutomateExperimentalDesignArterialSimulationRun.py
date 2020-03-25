@@ -12,6 +12,8 @@ import os
 import glob
 import sys
 import shutil
+
+
 sys.path.append(r'C:\Users\abibeka\OneDrive - Kittelson & Associates, Inc\Documents\Github\HCM_Pooled_Fund_CAV')
 
 Vissim = com.Dispatch("Vissim.Vissim-64.1100") # Vissim 9 - 64 bit
@@ -50,6 +52,10 @@ def SetMPRforVISSIM(MPR="0PerMPR"):
 def SaveVissimFile(OuterDir, PltSz, Gap, Mpr):
     Filename = os.path.join(OuterDir,"{}".format(PltSz),"{}".format(Gap)
                             ,"ArtBaseNet_{}_{}_{}.inpx".format(PltSz,Gap,MPR))
+    Vissim.Simulation.SetAttValue("SimPeriod",8400)
+    Vissim.Simulation.SetAttValue('NumRuns', 10)
+    Vissim.Simulation.SetAttValue('UseMaxSimSpeed', True)
+    Vissim.Graphics.CurrentNetworkWindow.SetAttValue('QuickMode', True)
     Vissim.SaveNetAs(Filename)
     Vissim.SaveLayout(Filename.replace('inpx','layx'))
     Nm = "ArtBaseNet_{}".format(MPR)
@@ -75,11 +81,19 @@ def CopyRBCFile(OuterDir,Speed,PltSz,Gap):
     shutil.copy(RBCFile, NewLoc)
     return()
 
-def RunVissimBatchModel():
+def RunVissimBatchModel(OuterDir, PltSz, Gap, Mpr):
+    Filename = os.path.join(OuterDir,"{}".format(PltSz),"{}".format(Gap)
+                            ,"ArtBaseNet_{}_{}_{}.inpx".format(PltSz,Gap,MPR))
+    layoutFile=Filename.replace(".inpx",".layx")
+    flag_read_additionally  = False # you can read network(elements) additionally, in this case set "flag_read_additionally" to true
+    Vissim.LoadNet(Filename, flag_read_additionally)
+    Vissim.LoadLayout(layoutFile)
+    Vissim.Simulation.SetAttValue("SimPeriod",8400)
     Vissim.Simulation.SetAttValue('NumRuns', 10)
     Vissim.Simulation.SetAttValue('UseMaxSimSpeed', True)
     Vissim.Graphics.CurrentNetworkWindow.SetAttValue('QuickMode', True)
     Vissim.Simulation.RunContinuous()
+    # Vissim.Exit()
     return()
     
 VI_number   = 1 # VI = Vehicle Input
@@ -88,8 +102,8 @@ Vissim.Net.VehicleInputs.ItemByKey(VI_number).AttValue("VehComp(1)")
 Vissim.Net.VehicleInputs.ItemByKey(VI_number).AttValue("VehComp(2)")
 
 
-Gaps = [0.6, 1, 1.2]
-PlatoonSizes = [1,2,5,10]
+Gaps = [0.6, 0.7, 1.1]
+PlatoonSizes = [1,2,5,8]
 MPR_to_VissimVehCompMap ={
  "0PerMPR":1,
  "20PerMPR":2,
@@ -100,7 +114,15 @@ MPR_to_VissimVehCompMap ={
  }
 VehComp = 1
 
-AlreadyRan = []
+# AlreadyRan = [[2,0.7]]
+PltSz_l = 2
+Gap_l= 0.7
+MPR = "100PerMPR"
+AlreadyRan = [[2,0.7],[2,0.6],[1,1.2]]
+
+Gaps = [0.7, 1.1]
+PlatoonSizes = [8]
+
 # EditParamFile(OuterDir=Path_to_VissimFile,Speed= 40,PltSz=2,Gap=0.6)
 
 for PltSz_l in PlatoonSizes:
@@ -109,24 +131,32 @@ for PltSz_l in PlatoonSizes:
     except:
         print("Dir creation error")
     for Gap_l in Gaps:
-        if (PltSz_l== 1) & (Gap_l in [1,1.2]):
+        if (PltSz_l== 1) & (Gap_l in [0.7, 1.1]):
             continue
         elif PltSz_l== 1:
-            Gap_l = 1.4
+            Gap_l = 1.2
         else: ""
         try:
             os.mkdir(os.path.join(Path_to_VissimFile,"{}".format(PltSz_l),"{}".format(Gap_l)))
         except:
             print("Dir creation error")  
-        EditParamFile(OuterDir=Path_to_VissimFile,Speed= 40,PltSz=PltSz_l,Gap=Gap_l)
-        CopyDriverModelDll(OuterDir=Path_to_VissimFile,Speed= 40,PltSz=PltSz_l,Gap=Gap_l)
-        CopyRBCFile(OuterDir=Path_to_VissimFile,Speed= 40,PltSz=PltSz_l,Gap=Gap_l)
+        #EditParamFile(OuterDir=Path_to_VissimFile,Speed= 40,PltSz=PltSz_l,Gap=Gap_l)
+        #CopyDriverModelDll(OuterDir=Path_to_VissimFile,Speed= 40,PltSz=PltSz_l,Gap=Gap_l)
+        #CopyRBCFile(OuterDir=Path_to_VissimFile,Speed= 40,PltSz=PltSz_l,Gap=Gap_l)
+        os.chdir(os.path.join(Path_to_VissimFile,"{}".format(PltSz_l),"{}".format(Gap_l)))
         for MPR in MPR_to_VissimVehCompMap.keys():
-            if MPR not in AlreadyRan:
+            if [PltSz_l,Gap_l] not in AlreadyRan:
                 SetMPRforVISSIM(MPR)
                 SaveVissimFile(OuterDir=Path_to_VissimFile, PltSz=PltSz_l, Gap=Gap_l, Mpr=MPR)
-                os.chdir(Path_to_VissimFile)
-                RunVissimBatchModel()
+                while True:
+                    try:
+                        RunVissimBatchModel(OuterDir=Path_to_VissimFile, PltSz=PltSz_l, Gap=Gap_l, Mpr=MPR)
+                        break
+                    except:
+                        print("Rerun")
+        os.chdir(Path_to_VissimFile)
+        
+
 ## ========================================================================
 # End Vissim
 #==========================================================================
