@@ -80,7 +80,7 @@ def GetPerformanceMeasures(MPR_Level, Gap= 0.7, PltSize = 5):
         RawDataDict2[RunNum] = tempDat[2]
         RawDataDict[RunNum].loc[:,"RunNo"] = RunNum
         RawDataDict2[RunNum].loc[:,"RunNo"] = RunNum
-    RawDat= pd.concat(RawDataDict.values())
+    #RawDat= pd.concat(RawDataDict.values())
     RawDat2= pd.concat(RawDataDict2.values())
     RawDat2.loc[:,'MPR_Level'] = MPR_Level
     #FollowUpLossDat, NumDataLoss= FollowUpHeadwayFun(RawDat2,MPR_Level)
