@@ -52,7 +52,7 @@ def ProcessSigTime(file):
     if(SigDat.GrStat.values[0] == 'G_st'):
         SigDat.loc[:,'CycNum'] = np.ceil((SigDat.index.values+1) /4)
     else:
-        SigDat.drop(index = 0,inplace =True)
+        SigDat.drop(index = 0,inplace =True) # We dropped index 0 but didn't reset index, so, index starts from 1
         SigDat.loc[:,'CycNum'] = np.ceil((SigDat.index.values) /4)
     SigDat.sort_values('SimSec',inplace=True)
     
