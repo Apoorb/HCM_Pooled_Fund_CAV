@@ -26,11 +26,7 @@ import numpy as np
 from glob import glob
 import subprocess
 #os.chdir(r'H:\22\22398 - CAV in HCM Pooled Fund Study\Task4-ScenarioTesting\Base VISSIM Models\Arterial_Model\VissimBaseModel')
-os.chdir(r'C:\Users\abibeka\OneDrive - Kittelson & Associates, Inc\Documents\HCM-CAV-Pooled-Fund\ExperimentalDesignArterial\VissimModels')
-os.chdir(r'C:\Users\abibeka\OneDrive - Kittelson & Associates, Inc\Documents\HCM-CAV-Pooled-Fund\ExperimentalDesignArterial\VissimModels\5\0.7')
 
-os.getcwd()
-MainDir = os.getcwd()
 
 
 # Get the Run # and the File
@@ -130,6 +126,8 @@ def StartUpLostTimeFun2(Data ,MPR_Level,HeadwayDat,timeQ = 3):
     # StartUpLossTmDat = StartUpLossTmDat[StartUpLossTmDat.Headway < 2.5] #Remove most of the right turning vehicles
     StartUpLossTmDat = StartUpLossTmDat.groupby(['RunNo','Lane','LaneDesc','CycNum']).agg({"Headway":["sum","count"],"t_Entry":"min"})
     StartUpLossTmDat.columns = ["Headway1st4Veh","NumVeh","t_Entry"]
+    StartUpLossTmDat = StartUpLossTmDat[StartUpLossTmDat.Headway1st4Veh<=12] 
+    #Sum of headway of 1st 4 vehicle is less than 12 seconds. Based on the plots
     HeadwayDat = HeadwayDat.reset_index()
     HeadwayDat.columns = [' '.join(col).strip() for col in HeadwayDat.columns.values]
     # HeadwayDat = HeadwayDat[HeadwayDat.TimeInt!="300-1200"]
@@ -200,6 +198,7 @@ def FollowUpHeadwayFun2(Data,MPR_Level,timeQ = 3):
     HeadwayDat.columns = ['_'.join(col).strip() for col in HeadwayDat.columns.values]
     HeadwayDat.loc[:,'Headway'] = (HeadwayDat.t_Entry_max - HeadwayDat.t_Entry_min)/(HeadwayDat.VehNum_max - HeadwayDat.VehNum_min)
     HeadwayDat.reset_index(inplace=True); HeadwayDat.rename(columns={"t_Entry_min":"t_Entry"},inplace=True)
+    HeadwayDat = HeadwayDat[HeadwayDat.Headway<=2.5]
     cut_bins = list(range(300,12000,900))
     labels = ["{}-{}".format(i,i+900) for i in cut_bins[:-1]]
     HeadwayDat.loc[:,'TimeInt'] = pd.cut(HeadwayDat.t_Entry,bins=cut_bins,labels=labels)
@@ -219,14 +218,14 @@ ReturnDatDict ={
     'Dat_dataLoss': pd.DataFrame()
     }
     
-Gaps = [0.6, 0.7, 1.1]
-PlatoonSizes = [1,2,5,8]
+Gaps = ["Normal",0.6, 1.1]
+PlatoonSizes = [1,5,8]
 # Gaps = [0.7]
 # PlatoonSizes = [5]
 OuterDir = r'C:\Users\abibeka\OneDrive - Kittelson & Associates, Inc\Documents\HCM-CAV-Pooled-Fund\ExperimentalDesignArterial\VissimModels'
 for PltSz_l in PlatoonSizes:
     for Gap_l in Gaps:
-        if (PltSz_l== 1) & (Gap_l in [0.7,1.1]):
+        if (PltSz_l== 1) & (Gap_l in ["Normal",1.1]):
             continue
         elif PltSz_l== 1:
             Gap_l = 1.2

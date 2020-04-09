@@ -49,9 +49,9 @@ def SetMPRforVISSIM(MPR="0PerMPR"):
         Vissim.Net.VehicleInputs.ItemByKey(VI_number).SetAttValue("VehComp({})".format(i),MPR_to_VissimVehCompMap[MPR])    
     return()
     
-def SaveVissimFile(OuterDir, PltSz, Gap, Mpr):
-    Filename = os.path.join(OuterDir,"{}".format(PltSz),"{}".format(Gap)
-                            ,"ArtBaseNet_{}_{}_{}.inpx".format(PltSz,Gap,MPR))
+def SaveVissimFile(OuterDir, PltSz, Gap_Label, Mpr):
+    Filename = os.path.join(OuterDir,"{}".format(PltSz),"{}".format(Gap_Label)
+                            ,"ArtBaseNet_{}_{}_{}.inpx".format(PltSz,Gap_Label,MPR))
     Vissim.Simulation.SetAttValue("SimPeriod",8400)
     Vissim.Simulation.SetAttValue('NumRuns', 10)
     Vissim.Simulation.SetAttValue('UseMaxSimSpeed', True)
@@ -61,29 +61,29 @@ def SaveVissimFile(OuterDir, PltSz, Gap, Mpr):
     Nm = "ArtBaseNet_{}".format(MPR)
     return()
     
-def EditParamFile(OuterDir,Speed,PltSz,Gap):
-    ParamFile = os.path.join(OuterDir,"{}".format(PltSz),"{}".format(Gap),"parameters.txt")
+def EditParamFile(OuterDir,Speed,PltSz,Gap,Gap_Label):
+    ParamFile = os.path.join(OuterDir,"{}".format(PltSz),"{}".format(Gap_Label),"parameters.txt")
     file1 = open(ParamFile,"w") 
     L1 = Speed * 0.44704; L2 = PltSz; L3 = Gap # Speed in m/s
     file1.write("{}\n".format(L1)); file1.write("{}\n".format(L2)); file1.write("{}\n".format(L3))
     file1.close()
     return()
     
-def CopyDriverModelDll(OuterDir,Speed,PltSz,Gap):
+def CopyDriverModelDll(OuterDir,Speed,PltSz,Gap_Label):
     DriverModelDll = os.path.join(OuterDir,"DriverModel.dll")
-    NewLoc = os.path.join(OuterDir,"{}".format(PltSz),"{}".format(Gap))
+    NewLoc = os.path.join(OuterDir,"{}".format(PltSz),"{}".format(Gap_Label))
     shutil.copy(DriverModelDll, NewLoc)
     return()
 
-def CopyRBCFile(OuterDir,Speed,PltSz,Gap):
+def CopyRBCFile(OuterDir,Speed,PltSz,Gap_Label):
     RBCFile = os.path.join(OuterDir,"PreTime_Synchro_V1.rbc")
-    NewLoc = os.path.join(OuterDir,"{}".format(PltSz),"{}".format(Gap))
+    NewLoc = os.path.join(OuterDir,"{}".format(PltSz),"{}".format(Gap_Label))
     shutil.copy(RBCFile, NewLoc)
     return()
 
-def RunVissimBatchModel(OuterDir, PltSz, Gap, Mpr):
-    Filename = os.path.join(OuterDir,"{}".format(PltSz),"{}".format(Gap)
-                            ,"ArtBaseNet_{}_{}_{}.inpx".format(PltSz,Gap,MPR))
+def RunVissimBatchModel(OuterDir, PltSz, Gap_Label, Mpr):
+    Filename = os.path.join(OuterDir,"{}".format(PltSz),"{}".format(Gap_Label)
+                            ,"ArtBaseNet_{}_{}_{}.inpx".format(PltSz,Gap_Label,MPR))
     layoutFile=Filename.replace(".inpx",".layx")
     flag_read_additionally  = False # you can read network(elements) additionally, in this case set "flag_read_additionally" to true
     Vissim.LoadNet(Filename, flag_read_additionally)
@@ -94,7 +94,7 @@ def RunVissimBatchModel(OuterDir, PltSz, Gap, Mpr):
     Vissim.Graphics.CurrentNetworkWindow.SetAttValue('QuickMode', True)
     Vissim.Simulation.RunContinuous()
     # Vissim.Exit()
-    return()
+    return(Filename)
     
 VI_number   = 1 # VI = Vehicle Input
 Vissim.Net.VehicleInputs.ItemByKey(VI_number).AttValue("VehComp(1)")
@@ -102,8 +102,8 @@ Vissim.Net.VehicleInputs.ItemByKey(VI_number).AttValue("VehComp(1)")
 Vissim.Net.VehicleInputs.ItemByKey(VI_number).AttValue("VehComp(2)")
 
 
-Gaps = [0.6, 0.7, 1.1]
-PlatoonSizes = [1,2,5,8]
+# Gaps = [0.6, 0.7, 1.1]
+# PlatoonSizes = [1,5,8]
 MPR_to_VissimVehCompMap ={
  "0PerMPR":1,
  "20PerMPR":2,
@@ -115,16 +115,17 @@ MPR_to_VissimVehCompMap ={
 VehComp = 1
 
 # AlreadyRan = [[2,0.7]]
-PltSz_l = 2
-Gap_l= 0.7
-MPR = "100PerMPR"
-AlreadyRan = [[2,0.7],[2,0.6],[1,1.2]]
+# PltSz_l = 2
+# Gap_l= 0.7
+# MPR = "100PerMPR"
 
-Gaps = [0.7, 1.1]
-PlatoonSizes = [8]
+AlreadyRan = []
+Gaps = [0.1]
+PlatoonSizes = [5,8]
 
 # EditParamFile(OuterDir=Path_to_VissimFile,Speed= 40,PltSz=2,Gap=0.6)
 
+ScneariosRan = []
 for PltSz_l in PlatoonSizes:
     try:
         os.mkdir(os.path.join(Path_to_VissimFile,"{}".format(PltSz_l)))
@@ -136,24 +137,25 @@ for PltSz_l in PlatoonSizes:
         elif PltSz_l== 1:
             Gap_l = 1.2
         else: ""
+        Gap_Label = Gap_l
+        if Gap_l == 0.1 : Gap_Label= "Normal"
         try:
-            os.mkdir(os.path.join(Path_to_VissimFile,"{}".format(PltSz_l),"{}".format(Gap_l)))
+            os.mkdir(os.path.join(Path_to_VissimFile,"{}".format(PltSz_l),"{}".format(Gap_Label)))
         except:
             print("Dir creation error")  
-        #EditParamFile(OuterDir=Path_to_VissimFile,Speed= 40,PltSz=PltSz_l,Gap=Gap_l)
-        #CopyDriverModelDll(OuterDir=Path_to_VissimFile,Speed= 40,PltSz=PltSz_l,Gap=Gap_l)
-        #CopyRBCFile(OuterDir=Path_to_VissimFile,Speed= 40,PltSz=PltSz_l,Gap=Gap_l)
-        os.chdir(os.path.join(Path_to_VissimFile,"{}".format(PltSz_l),"{}".format(Gap_l)))
+        EditParamFile(OuterDir=Path_to_VissimFile,Speed= 40,PltSz=PltSz_l,Gap=Gap_l,Gap_Label=Gap_Label)
+        CopyDriverModelDll(OuterDir=Path_to_VissimFile,Speed= 40,PltSz=PltSz_l,Gap_Label=Gap_Label)
+        CopyRBCFile(OuterDir=Path_to_VissimFile,Speed= 40,PltSz=PltSz_l,Gap_Label=Gap_Label)
+        os.chdir(os.path.join(Path_to_VissimFile,"{}".format(PltSz_l),"{}".format(Gap_Label)))
         for MPR in MPR_to_VissimVehCompMap.keys():
             if [PltSz_l,Gap_l] not in AlreadyRan:
                 SetMPRforVISSIM(MPR)
-                SaveVissimFile(OuterDir=Path_to_VissimFile, PltSz=PltSz_l, Gap=Gap_l, Mpr=MPR)
-                while True:
-                    try:
-                        RunVissimBatchModel(OuterDir=Path_to_VissimFile, PltSz=PltSz_l, Gap=Gap_l, Mpr=MPR)
-                        break
-                    except:
-                        print("Rerun")
+                SaveVissimFile(OuterDir=Path_to_VissimFile, PltSz=PltSz_l, Gap_Label=Gap_Label, Mpr=MPR)
+                try:
+                    temp = RunVissimBatchModel(OuterDir=Path_to_VissimFile, PltSz=PltSz_l, Gap_Label=Gap_Label, Mpr=MPR)
+                    ScneariosRan.append(temp)
+                except:
+                    print(ScneariosRan)
         os.chdir(Path_to_VissimFile)
         
 

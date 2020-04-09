@@ -49,7 +49,7 @@ if __name__ == '__main__':
     # 5 runs 
     # Path_to_VissimFile = r'H:\22\22398 - CAV in HCM Pooled Fund Study\Task4-ScenarioTesting\Base VISSIM Models\Arterial_Model\VissimBaseModel'
     Path_to_VissimFile = r'C:\Users\abibeka\OneDrive - Kittelson & Associates, Inc\Documents\HCM-CAV-Pooled-Fund\ExperimentalDesignArterial\VissimModels'
-    Gaps = [0.6, 1.1]
+    Gaps = [0.1]
     MPR_to_VissimVehCompMap ={
      "0PerMPR":1,
      "20PerMPR":2,
@@ -60,14 +60,13 @@ if __name__ == '__main__':
      }
     VehComp = 1
 
-
-    AlreadyRan = [[2,0.7]]
     # EditParamFile(OuterDir=Path_to_VissimFile,Speed= 40,PltSz=2,Gap=0.6)
     #         p1 = Process(target =RunVissimBatchModel(OuterDir=Path_to_VissimFile, PltSz=1, Gap=Gap_l, Mpr=MPR))
     for Gap_l in Gaps:
        for MPR in MPR_to_VissimVehCompMap.keys():
+           Gap_label = Gap_l
              #SetMPRforVISSIM(MPR)
-             #SaveVissimFile(OuterDir=Path_to_VissimFile, PltSz=PltSz_l, Gap=Gap_l, Mpr=MPR)
+             if Gap_l == 0.1: Gap_label = "Normal
              RunVissimBatchModel(Path_to_VissimFile,5, Gap_l, MPR)
     Vissim = None  
     
