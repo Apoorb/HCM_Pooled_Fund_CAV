@@ -102,7 +102,7 @@ Vissim.Net.VehicleInputs.ItemByKey(VI_number).AttValue("VehComp(1)")
 Vissim.Net.VehicleInputs.ItemByKey(VI_number).AttValue("VehComp(2)")
 
 
-# Gaps = [0.6, 0.7, 1.1]
+# Gaps = [0.1, 0.6, 1.1]
 # PlatoonSizes = [1,5,8]
 MPR_to_VissimVehCompMap ={
  "0PerMPR":1,
