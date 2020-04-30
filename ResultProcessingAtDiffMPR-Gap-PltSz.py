@@ -198,7 +198,7 @@ def FollowUpHeadwayFun2(Data,MPR_Level,timeQ = 3):
     HeadwayDat.columns = ['_'.join(col).strip() for col in HeadwayDat.columns.values]
     HeadwayDat.loc[:,'Headway'] = (HeadwayDat.t_Entry_max - HeadwayDat.t_Entry_min)/(HeadwayDat.VehNum_max - HeadwayDat.VehNum_min)
     HeadwayDat.reset_index(inplace=True); HeadwayDat.rename(columns={"t_Entry_min":"t_Entry"},inplace=True)
-    HeadwayDat = HeadwayDat[HeadwayDat.Headway<=2.5]
+    HeadwayDat = HeadwayDat[HeadwayDat.Headway<= 4] #2.5
     cut_bins = list(range(300,12000,900))
     labels = ["{}-{}".format(i,i+900) for i in cut_bins[:-1]]
     HeadwayDat.loc[:,'TimeInt'] = pd.cut(HeadwayDat.t_Entry,bins=cut_bins,labels=labels)
@@ -248,9 +248,9 @@ except:
     print("Dir creation error")
 os.chdir("../Results")
 os.getcwd()
-OutFi = "Results_MPR.xlsx"
+OutFi = "Results_MPR_Exp.xlsx"
 WantResMPR = False
-OutFi_plot = "Results_MPR_Plotting.xlsx"
+OutFi_plot = "Results_MPR_Plotting_Exp.xlsx"
 writer = pd.ExcelWriter(OutFi)
 writer_plot = pd.ExcelWriter(OutFi_plot)
 for key,value in ReturnDatDict.items(): 
