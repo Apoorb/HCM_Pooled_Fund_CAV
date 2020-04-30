@@ -34,7 +34,7 @@ MainDir = os.getcwd()
 
 # Read once --- Takes time to load
 VolTimeIntDat = pd.read_csv("VolumeTimeIntervalMap.csv")
-x1 = pd.ExcelFile("Results_MPR_Plotting.xlsx")
+x1 = pd.ExcelFile("Results_MPR_Plotting_Exp.xlsx")
 
 
 
@@ -157,20 +157,20 @@ def PlotData(ReadFileInfo1, VolTimeIntDat, Y_Var, Y_Lab,tittleAddOn,direction="E
     fig.update_layout(showlegend=True)
     plot(fig, filename="Plots/{}.html".format(fileNm),auto_open=False)
     
-    # fig2 = px.bar(Data1_PLot, x = "Volume (Veh/hr)", y = Y_Lab,color ="CAV Market Penetration Rate",facet_row ="Platoon Size" ,facet_col ="Gap" ,barmode="group", 
-    #           color_discrete_sequence = colorScale_Axb,template="plotly_white",range_y=range_y_,
-    #           title = "{}{}".format(tittleAddOn,"<br><i>Gap is not relevant for ACC (Platoon Size 1)</i>"),error_y="Error_Bar")
-    # fig2.add_annotation(
-    #     x=0.5,
-    #     y=-0.18,
-    #     text="Error Bars Show 95% CI based on t Distribution")
-    # fig2.update_annotations(dict(
-    #             xref="paper",
-    #             yref="paper",
-    #             showarrow=False,
-    # ))
-    # fig2.update_layout(showlegend=True)
-    # plot(fig2, filename="Plots/DebugPlots/{} with Error Bars.html".format(fileNm),auto_open=False)
+    fig2 = px.bar(Data1_PLot, x = "Volume (Veh/hr)", y = Y_Lab,color ="CAV Market Penetration Rate (%)",facet_row ="Platoon Size" ,facet_col ="Gap" ,barmode="group", 
+              color_discrete_sequence = colorScale_Axb,template="plotly_white",range_y=range_y_,
+              title = "{}{}".format(tittleAddOn,"<br><i>Gap is not relevant for ACC (Platoon Size 1)</i>"),error_y="Error_Bar")
+    fig2.add_annotation(
+        x=0.5,
+        y=-0.18,
+        text="Error Bars Show 95% CI based on t Distribution")
+    fig2.update_annotations(dict(
+                xref="paper",
+                yref="paper",
+                showarrow=False,
+    ))
+    fig2.update_layout(showlegend=True)
+    plot(fig2, filename="Plots/DebugPlots/{} with Error Bars.html".format(fileNm),auto_open=False)
     if(Y_Var=="Avg_headway"):
         Data1_PLot_1.loc[:,"Saturation Flow Rate (pcu/hr/ln)"] = 3600/Data1_PLot_1.loc[:,Y_Lab]
         Y_Lab = "Saturation Flow Rate (pcu/hr/ln)"
