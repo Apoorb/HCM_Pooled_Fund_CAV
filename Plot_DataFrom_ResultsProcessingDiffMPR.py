@@ -7,10 +7,10 @@ Purpose: Plot data obtained from Results Processing Different MPR
 
 
 #0.0 Housekeeping. Clear variable space
-from IPython import get_ipython  #run magic commands
-ipython = get_ipython()
-ipython.magic("reset -f")
-ipython = get_ipython()
+# from IPython import get_ipython  #run magic commands
+# ipython = get_ipython()
+# ipython.magic("reset -f")
+# ipython = get_ipython()
 
 # Load Libraries
 #****************************************************************************************************************************************
@@ -22,19 +22,20 @@ from glob import glob
 from scipy.stats import t
 import matplotlib.pyplot as plt
 import numpy as np
+import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
 #Using Plotly with Spyder
 #https://community.plot.ly/t/plotly-for-spyder/10527/2
 from plotly.offline import plot
 
-os.chdir(r'C:\Users\abibeka\OneDrive - Kittelson & Associates, Inc\Documents\HCM-CAV-Pooled-Fund\ExperimentalDesignArterial\Results')
-os.getcwd()
-MainDir = os.getcwd()
+#os.chdir(r'C:\Users\abibeka\OneDrive - Kittelson & Associates, Inc\Documents\HCM-CAV-Pooled-Fund\ExperimentalDesignArterial\Results')
+#os.getcwd()
+MainDir =r'C:\Users\abibeka\OneDrive - Kittelson & Associates, Inc\Documents\HCM-CAV-Pooled-Fund\Experimental Design Arterial\Results\Results Protected'
 
 # Read once --- Takes time to load
-VolTimeIntDat = pd.read_csv("VolumeTimeIntervalMap.csv")
-x1 = pd.ExcelFile("Results_MPR_Plotting_Exp.xlsx")
+VolTimeIntDat = pd.read_csv(os.path.join(MainDir,"VolumeTimeIntervalMap.csv"))
+x1 = pd.ExcelFile(os.path.join(MainDir,"Results_MPR_Plotting_Exp.xlsx"))
 
 
 
@@ -125,7 +126,7 @@ def PlotData(ReadFileInfo1, VolTimeIntDat, Y_Var, Y_Lab,tittleAddOn,direction="E
     Data1 = Data1[Data1.Volume>=1600]
     # Data1 = Data1[Data1.Volume<= 2400]
     Data1.Volume = pd.Categorical(Data1.Volume)
-    Data1.loc[:,Y_Var] =Data1.loc[:,Y_Var].round(2)
+    #Data1.loc[:,Y_Var] =Data1.loc[:,Y_Var].round(2)
     Data1 = Data1[Data1.MPR.isin(PlotMPR)]
     # Correct MPR Labels
     Data1.loc[:,"MPR"] = Data1.MPR.apply(ReLab)
@@ -155,7 +156,7 @@ def PlotData(ReadFileInfo1, VolTimeIntDat, Y_Var, Y_Lab,tittleAddOn,direction="E
                  , title = "{}{}".format(tittleAddOn,"<br><i>Gap is not relevant for ACC (Platoon Size 1)</i>"))
     #
     fig.update_layout(showlegend=True)
-    plot(fig, filename="Plots/{}.html".format(fileNm),auto_open=False)
+    plot(fig, filename=os.path.join(MainDir,"Plots/{}.html".format(fileNm)),auto_open=False)
     
     fig2 = px.bar(Data1_PLot, x = "Volume (Veh/hr)", y = Y_Lab,color ="CAV Market Penetration Rate (%)",facet_row ="Platoon Size" ,facet_col ="Gap" ,barmode="group", 
               color_discrete_sequence = colorScale_Axb,template="plotly_white",range_y=range_y_,
@@ -170,7 +171,7 @@ def PlotData(ReadFileInfo1, VolTimeIntDat, Y_Var, Y_Lab,tittleAddOn,direction="E
                 showarrow=False,
     ))
     fig2.update_layout(showlegend=True)
-    plot(fig2, filename="Plots/DebugPlots/{} with Error Bars.html".format(fileNm),auto_open=False)
+    plot(fig2, filename=os.path.join(MainDir,"Plots/DebugPlots/{} with Error Bars.html").format(fileNm),auto_open=False)
     if(Y_Var=="Avg_headway"):
         Data1_PLot_1.loc[:,"Saturation Flow Rate (pcu/hr/ln)"] = 3600/Data1_PLot_1.loc[:,Y_Lab]
         Y_Lab = "Saturation Flow Rate (pcu/hr/ln)"
@@ -195,7 +196,7 @@ def PlotData(ReadFileInfo1, VolTimeIntDat, Y_Var, Y_Lab,tittleAddOn,direction="E
                 yref="paper",
                 showarrow=False,))
     fig3.update_layout(showlegend=True)
-    plot(fig3, filename="Plots/Scatter/Plt_{}.html".format(fileNm),auto_open=False)
+    plot(fig3, filename=os.path.join(MainDir,"Plots/Scatter/Plt_{}.html".format(fileNm)),auto_open=False)
 
     return()
     

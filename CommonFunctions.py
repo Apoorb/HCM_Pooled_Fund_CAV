@@ -26,7 +26,7 @@ def RenamePhase(x):
 
 
 
-def ProcessSigTime(file):
+def ProcessSigTime(file, Phase5Check=True):
     '''
     Process signal data to get green start and end
     '''
@@ -45,15 +45,20 @@ def ProcessSigTime(file):
     SigDat.loc[:,'GrStat'] = SigDat.NewState.apply(lambda x: 'G_st' if x=="green" else "G_end")
     SigDat.sort_values('SimSec',inplace=True)
     SigDat.reset_index(drop=True,inplace=True)
-    np.ceil((SigDat.index.values+1) /4) #Cycle numbers if 1st row is kept. 
+    Phase5Check = None
+    if Phase5Check:
+        NumPhases = 4
+    else:
+        NumPhases =2 
+    np.ceil((SigDat.index.values+1) /NumPhases) #Cycle numbers if 1st row is kept. 
     #Denominator is 4 because we have 2 phases and 2 rows per phase (green start and End)
-    np.ceil((SigDat.index.values) /4) #Cycle numbers if 1st row is deleted
+    np.ceil((SigDat.index.values) /NumPhases) #Cycle numbers if 1st row is deleted
     # Create Green Start, End Pairs : Call them CycNum
     if(SigDat.GrStat.values[0] == 'G_st'):
-        SigDat.loc[:,'CycNum'] = np.ceil((SigDat.index.values+1) /4)
+        SigDat.loc[:,'CycNum'] = np.ceil((SigDat.index.values+1) /NumPhases)
     else:
         SigDat.drop(index = 0,inplace =True) # We dropped index 0 but didn't reset index, so, index starts from 1
-        SigDat.loc[:,'CycNum'] = np.ceil((SigDat.index.values) /4)
+        SigDat.loc[:,'CycNum'] = np.ceil((SigDat.index.values) /NumPhases)
     SigDat.sort_values('SimSec',inplace=True)
     
     # Get start and end of phase 1 and 5 within each cycle
@@ -61,7 +66,9 @@ def ProcessSigTime(file):
     CycleLenPh2 = SigDat_clean[SigDat_clean.PhaseNum==2][['G_st','G_end']].diff().mean(axis=0)
     CycleLenPh5 = SigDat_clean[SigDat_clean.PhaseNum==5][['G_st','G_end']].diff().mean(axis=0)
     CycleLenPh2 = CycleLenPh2.apply(np.ceil); CycleLenPh5 = CycleLenPh5.apply(np.ceil)
-    assert((CycleLenPh2[0]==100) & (CycleLenPh2[1] ==100) &(CycleLenPh5[0]==100) & (CycleLenPh5[1] ==100))
+    assert((CycleLenPh2[0]==100) & (CycleLenPh2[1] ==100))
+    if Phase5Check:
+        assert((CycleLenPh5[0]==100) & (CycleLenPh5[1] ==100))
     SigDat_clean.sort_values(['G_st'],inplace=True)
     # SigDat_clean.head()
     # SigDat_clean.tail()
@@ -69,11 +76,11 @@ def ProcessSigTime(file):
     
     
 
-def ProcessDatCol(file ,LaneDict):
+def ProcessDatCol(file ,LaneDict, skiprows1 = 11):
     '''
     Process data collection points
     '''
-    DataColDat = pd.read_csv(file, delimiter =';',skiprows= 11)
+    DataColDat = pd.read_csv(file, delimiter =';',skiprows= skiprows1)
     DataColDat = DataColDat.iloc[:,0:-1]
     DataColDat.columns = ['Lane','t_Entry','t_Exit','VehNo','VehType','Del','V_mph','Acc_ftsec2','Del2','Del3','tQueue','VehLen_ft']
     DataColDat = DataColDat[['Lane','t_Entry','t_Exit','VehNo','VehType','V_mph','Acc_ftsec2','tQueue','VehLen_ft']]
