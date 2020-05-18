@@ -39,12 +39,10 @@ Pattern = re.compile("(.*)Platoon-(1|5|8)_Gap-(Normal|1.2|0.6).*")
 PlatoonSize =Pattern.search(a).group(2)
 GapSize= Pattern.search(a).group(3)
 SearchDepth = os.path.join(a,"Scenarios")
-SenarioMap = {"S000001":"0PerMPR","S000002":"MPR 20PerMPR","S000003":"40PerMPR",
-              "S000004":"60PerMPR","S000005":"80PerMPR","S000006":"MPR 100PerMPR"}
-SenarioMap = {"S000005":"80PerMPR","S000006":"MPR 100PerMPR"}
+SenarioMap = {"S000001":"0PerMPR","S000002":"20PerMPR","S000003":"40PerMPR",
+              "S000004":"60PerMPR","S000005":"80PerMPR","S000006":"100PerMPR"}
 FinDat = pd.DataFrame()
 TempDfList =[]
-SearchDepth2 = r"C:\Users\abibeka\OneDrive - Kittelson & Associates, Inc\Documents\HCM-CAV-Pooled-Fund\Experimental Design Arterial\VissimModel_permissive\Done\Platoon-8_Gap-Normal\Scenarios\S000006"
 for Scenario in ListOfScenarioFolders:
     Pattern = re.compile("(.*)Platoon-(1|5|8)_Gap-(Normal|1.1|1.2|0.6).*")
     PlatoonSize =int(Pattern.search(Scenario).group(2))
@@ -67,11 +65,11 @@ for Scenario in ListOfScenarioFolders:
             print("xxx"*20)
 FinDat = pd.concat(TempDfList)
 
-
 # Back Calculate Critical Gap
 #**************************************************************************************************************************************** 
 ThroughSatFlowDat1 = ReadSatFlowData()
-FinDat = FinDat.merge(ThroughSatFlowDat1)
+ThroughSatFlowDat1.Gap =ThroughSatFlowDat1.Gap.astype(str)
+FinDat = FinDat.merge(ThroughSatFlowDat1,left_on=['Platoon','Gap','MPR'],right_on=['PltSize','Gap','MPR'],how='left')
 
 #Global Variables:
 P = .57 # Proportion arriving on green
@@ -104,10 +102,10 @@ FinDat1.sort_index(inplace=True)
 # Plot
 #****************************************************************************************************************************************
 PlotData(Data1 =FinDat1, Y_Var= "CriticalHeadway", Y_Lab="Critical Headway (sec)",
-         tittleAddOn= "CriticalHeadway",fileNm="CriticalHeadway",range_y_ = [0,6])
+         tittleAddOn= "CriticalHeadway",MainDir=ResDir,fileNm="CriticalHeadway",range_y_ = [0,6])
 
 PlotData(Data1 =FinDat1, Y_Var= "FollowUpHeadway", Y_Lab="Follow-Up Headway (sec)",
-         tittleAddOn= "FollowUpHeadway",fileNm="FollowUpHeadway",range_y_ = [0,6])
+         tittleAddOn= "FollowUpHeadway",MainDir=ResDir,fileNm="FollowUpHeadway",range_y_ = [0,6])
 
 
 
