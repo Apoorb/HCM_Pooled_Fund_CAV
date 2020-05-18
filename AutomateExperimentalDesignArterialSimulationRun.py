@@ -12,8 +12,7 @@ import os
 import glob
 import sys
 import shutil
-
-
+import gc
 sys.path.append(r'C:\Users\abibeka\OneDrive - Kittelson & Associates, Inc\Documents\Github\HCM_Pooled_Fund_CAV')
 
 Vissim = com.Dispatch("Vissim.Vissim-64.1100") # Vissim 9 - 64 bit
@@ -24,11 +23,11 @@ Vissim = com.gencache.EnsureDispatch("Vissim.Vissim.11") # Vissim 11
 #==========================================================================
 # 5 runs 
 # Path_to_VissimFile = r'H:\22\22398 - CAV in HCM Pooled Fund Study\Task4-ScenarioTesting\Base VISSIM Models\Arterial_Model\VissimBaseModel'
-Path_to_VissimFile = r'C:\Users\abibeka\OneDrive - Kittelson & Associates, Inc\Documents\HCM-CAV-Pooled-Fund\ExperimentalDesignArterial\VissimModels'
+Path_to_VissimFile = r'C:\Users\abibeka\OneDrive - Kittelson & Associates, Inc\Documents\HCM-CAV-Pooled-Fund\Experimental Design Arterial\VissimModel_permissive\Platoon-8_Gap-0.6 - Copy'
 os.chdir(Path_to_VissimFile)
 os.getcwd()
-Filename = Path_to_VissimFile +"\\ArtBaseNet.inpx"
-layoutFile=Filename.replace(".inpx",".layx")
+Filename = Path_to_VissimFile +"\\VissimBaseModelPermissiveLeft.vissimpdb"
+layoutFile=Filename.replace(".vissimpdb",".layx")
 flag_read_additionally  = False # you can read network(elements) additionally, in this case set "flag_read_additionally" to true
 Vissim.LoadNet(Filename, flag_read_additionally)
 Vissim.LoadLayout(layoutFile)

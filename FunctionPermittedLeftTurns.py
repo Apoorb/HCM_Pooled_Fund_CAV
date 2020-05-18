@@ -14,7 +14,11 @@ from glob import glob
 sys.path.append(r'C:\Users\abibeka\OneDrive - Kittelson & Associates, Inc\Documents\Github\HCM_Pooled_Fund_CAV')
 from CommonFunctions import ProcessSigTime
 from CommonFunctions import ProcessDatCol
-
+import plotly.express as px
+import plotly.graph_objects as go
+#Using Plotly with Spyder
+#https://community.plot.ly/t/plotly-for-spyder/10527/2
+from plotly.offline import plot
 
 def BatchProcessFiles(SearchDirectory,VolumeMap):
     #List Files to Read
@@ -66,8 +70,7 @@ def GetFollowUpHeadway(DatColDat, SigDat,VolumeMap):
     DatColDatWBT.sort_values('t_Entry',inplace=True)
     bins = DatColDatWBT.t_Entry.values #Define Headway bins
     uniqueBins, c = np.unique(bins, return_counts=True)
-    DatColDatWBT = DatColDatWBT.assign(HeadwayBins = lambda x: pd.cut(x['t_Entry'],\
-                            uniqueBins,right=False,include_lowest=True)).dropna()
+    DatColDatWBT.loc[:,"HeadwayBins"]= pd.cut(DatColDatWBT.t_Entry, uniqueBins,right=False,include_lowest=True).dropna()
     #Get EBL data
     #------------------------------------------------------------------------------------------
     DatColDatEBL = DatColDat.query("LaneDesc=='EBL'")
@@ -85,7 +88,7 @@ def GetFollowUpHeadway(DatColDat, SigDat,VolumeMap):
     try:
         CheckDat = DatColDatEBL[DatColDatEBL.HeadwayBins.isna()]
         VehArrivalBeforePhaseEnd= CheckDat.Phase2Interval.apply(lambda x:x.right).astype('float')-CheckDat.t_Entry
-        assert((VehArrivalBeforePhaseEnd < 4).all()),"Check the data" 
+        assert((VehArrivalBeforePhaseEnd < 10).all()),"Check the data" 
     finally:
         DatColDatEBL = DatColDatEBL[~DatColDatEBL.HeadwayBins.isna()]
     #Get Follow-up Headway 
@@ -190,3 +193,65 @@ def ReadSatFlowData():
     # This sat flow doesn't match the figures- -- Rounding error
     ThroughSatFlowDat1.loc[:,"SatFlowRateOppThru"] = (3600/ThroughSatFlowDat1.Avg_headway).round(2)
     return(ThroughSatFlowDat1)
+
+def ReLab_Gap(x):
+    GapLab = {
+    0.6:"Aggressive",
+    "Normal": "Normal",
+    1.1: "Conservative"}
+    return(GapLab[x])
+
+def ReLab(x):
+    MprLab = {
+    "0PerMPR":"0",
+    "20PerMPR": "20",
+    "40PerMPR": "40",
+    "60PerMPR": "60",
+    "80PerMPR": "80",
+    "100PerMPR": "100"}
+    return(MprLab[x])
+
+def PlotData(Data1, Y_Var, Y_Lab,tittleAddOn,fileNm="",range_y_ = [0,6]):
+    Data1 = Data1.reset_index()
+    Data1 = Data1[Data1.PltSize.isin([1,5,8])] # Remove Platoon Size 1 and 2
+    Data1.loc[Data1.PltSize==1,'Gap'] = 0.6
+    tempDat = Data1.loc[Data1.PltSize==1]
+    tempDat.loc[:,'Gap'] = 1.1
+    tempDat2 = Data1.loc[Data1.PltSize==1]
+    tempDat2.loc[:,'Gap'] = "Normal"
+    Data1 = pd.concat([Data1,tempDat,tempDat2])
+    
+    Data1 = Data1[Data1.Gap.isin(['Normal',0.6,1.1])]
+    Data1.Volumes = pd.Categorical(Data1.Volumes)
+    Data1.loc[:,"MPR"] = Data1.MPR.apply(ReLab)
+    Data1.loc[:,"Gap"] = Data1.Gap.apply(ReLab_Gap)
+    Data1.rename(columns={Y_Var:Y_Lab, "Volumes": "Volume (Veh/hr)"},inplace=True)
+    
+    MprCats=["0","20","40","60","80","100"]
+    GapCats = ['Aggressive','Normal','Conservative']
+    Data1.MPR = pd.Categorical(Data1.MPR, MprCats, ordered =True)
+    Data1.PltSize = pd.Categorical(Data1.PltSize,[1,5,8], ordered =True)
+    Data1.Gap = pd.Categorical(Data1.Gap, GapCats, ordered =True)
+    
+    Data1 = Data1.sort_values(["Volume (Veh/hr)","MPR","PltSize","Gap"])
+    colorScale_Axb = ['rgb(210,210,210)', 'rgb(180,180,180)','rgb(120,120,120)','rgb(100,100,100)','rgb(60,60,60)','rgb(20,20,20)','rgb(0,0,0)']
+        
+    Data1.rename(columns={Y_Var:Y_Lab, "MPR": "CAV Market Penetration Rate (%)","PltSize":"Platoon Size"},inplace=True)
+    
+    fig3 = px.scatter(Data1, x ="Volume (Veh/hr)", y = Y_Lab, color ="CAV Market Penetration Rate (%)",facet_col ="Platoon Size" ,
+                     facet_row="Platoon Size" ,symbol="CAV Market Penetration Rate (%)"
+         ,template="plotly_white",range_y=range_y_
+         , title = "{}".format(tittleAddOn))
+    
+    fig3.add_annotation(
+        x=0.5,
+        y=-0.18,
+        text="<i>Note: Intra-Platoon Gap is not relevant for ACC mode (Platoon Size 1 and Platoon Leaders). Vehicles have a Desired Gap of 1.5 seconds in ACC mode</i>")
+    fig3.update_annotations(dict(
+                xref="paper",
+                yref="paper",
+                showarrow=False,))
+    fig3.update_layout(showlegend=True)
+    plot(fig3, filename=os.path.join(MainDir,"Plt_{}.html".format(fileNm)),auto_open=False)
+    return()
+    

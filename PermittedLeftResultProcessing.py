@@ -24,18 +24,15 @@ if not sys.warnoptions:
     
     
 VolumeMap = {}
-os.chdir(r'C:\Users\abibeka\OneDrive - Kittelson & Associates, Inc\Documents\HCM-CAV-Pooled-Fund\Experimental Design Arterial\VissimModel_permissive\PermissiveBaseScenarioManager\Scenarios\S000001')
 
-InDir =r'C:\Users\abibeka\OneDrive - Kittelson & Associates, Inc\Documents\HCM-CAV-Pooled-Fund\Experimental Design Arterial\VissimModel_permissive\PermissiveBaseScenarioManager\Scenarios\S000001'
+ResDir =r'C:\Users\abibeka\OneDrive - Kittelson & Associates, Inc\Documents\HCM-CAV-Pooled-Fund\Experimental Design Arterial\VissimModel_permissive\Results'
 Volumes = np.arange(600,3000,300)
 TimeIntevals = pd.IntervalIndex.from_tuples([(900, 1800), (2700, 3600), (4500, 5400),
                                      (6300,7200),(8100,9000),(9900,10800),
                                      (11700,12600),(13500,14400)],closed= "both")
 VolumeMap = pd.DataFrame({'Volumes':Volumes,'TimeIntevals':TimeIntevals})
-BatchProcessFiles(InDir, VolumeMap)
 
-
-OutsideDir = r"C:\Users\abibeka\OneDrive - Kittelson & Associates, Inc\Documents\HCM-CAV-Pooled-Fund\Experimental Design Arterial\VissimModel_permissive"
+OutsideDir = r"C:\Users\abibeka\OneDrive - Kittelson & Associates, Inc\Documents\HCM-CAV-Pooled-Fund\Experimental Design Arterial\VissimModel_permissive\Done"
 ListOfScenarioFolders = glob(os.path.join(OutsideDir,"Platoon-*"))
 a = ListOfScenarioFolders[0]
 Pattern = re.compile("(.*)Platoon-(1|5|8)_Gap-(Normal|1.2|0.6).*")
@@ -44,9 +41,10 @@ GapSize= Pattern.search(a).group(3)
 SearchDepth = os.path.join(a,"Scenarios")
 SenarioMap = {"S000001":"0PerMPR","S000002":"MPR 20PerMPR","S000003":"40PerMPR",
               "S000004":"60PerMPR","S000005":"80PerMPR","S000006":"MPR 100PerMPR"}
-
+SenarioMap = {"S000005":"80PerMPR","S000006":"MPR 100PerMPR"}
 FinDat = pd.DataFrame()
 TempDfList =[]
+SearchDepth2 = r"C:\Users\abibeka\OneDrive - Kittelson & Associates, Inc\Documents\HCM-CAV-Pooled-Fund\Experimental Design Arterial\VissimModel_permissive\Done\Platoon-8_Gap-Normal\Scenarios\S000006"
 for Scenario in ListOfScenarioFolders:
     Pattern = re.compile("(.*)Platoon-(1|5|8)_Gap-(Normal|1.1|1.2|0.6).*")
     PlatoonSize =int(Pattern.search(Scenario).group(2))
@@ -62,15 +60,16 @@ for Scenario in ListOfScenarioFolders:
             TempDf.loc[:,"Platoon"] = PlatoonSize
             TempDf.loc[:,"Gap"] = GapSize
             TempDfList.append(TempDf)
-        except:
+        except AssertionError as error:
             print("xxx"*20)
-            print("finish scenario runs")
+            print("Needs Debuging")
             print(PlatoonSize,"---",GapSize,"---",mpr)
             print("xxx"*20)
 FinDat = pd.concat(TempDfList)
 
 
-# Get     
+# Back Calculate Critical Gap
+#**************************************************************************************************************************************** 
 ThroughSatFlowDat1 = ReadSatFlowData()
 FinDat = FinDat.merge(ThroughSatFlowDat1)
 
@@ -102,6 +101,25 @@ FinDat1 = FinDat.set_index(['Platoon','Gap','Volumes','MPR'])
 FinDat1.sort_index(inplace=True)
 # -(3600/900)*np.log((628.713 * (1-np.exp(-900*2.5/3600)))/900)
 
+# Plot
+#****************************************************************************************************************************************
+PlotData(Data1 =FinDat1, Y_Var= "CriticalHeadway", Y_Lab="Critical Headway (sec)",
+         tittleAddOn= "CriticalHeadway",fileNm="CriticalHeadway",range_y_ = [0,6])
+
+PlotData(Data1 =FinDat1, Y_Var= "FollowUpHeadway", Y_Lab="Follow-Up Headway (sec)",
+         tittleAddOn= "FollowUpHeadway",fileNm="FollowUpHeadway",range_y_ = [0,6])
+
+
+
+
+
+
+
+
+
+
+# Round HCM Calculation 
+#****************************************************************************************************************************************
 #SaturationFlowRateOppThrough =np.array([1900, 1900,1900,1900,1900,1900,1900,1900]) #Revise this 
 P = .57 # Proportion arriving on green
 C = 100
