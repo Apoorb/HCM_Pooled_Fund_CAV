@@ -30,10 +30,11 @@ def RunVissimScenarios(Vissim):
     # Set maximum speed:
     StartSeed = 42
     Vissim.Simulation.SetAttValue('UseMaxSimSpeed', True)
-    for cnt_Sim in range(10):
-        Vissim.Simulation.SetAttValue('RandSeed', cnt_Sim + StartSeed) # Note: RandSeed 0 is not allowed
-        Vissim.Simulation.RunContinuous()
-        gc.collect()
+    Vissim.Simulation.RunContinuous()
+    gc.collect()
+
+        
+       
     
 
 
