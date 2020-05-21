@@ -108,11 +108,19 @@ PlotData(Data1 =FinDat1, Y_Var= "FollowUpHeadway", Y_Lab="Follow-Up Headway (sec
          tittleAddOn= "FollowUpHeadway",MainDir=ResDir,fileNm="FollowUpHeadway",range_y_ = [0,6])
 
 
+PlotData(Data1 =FinDat1, Y_Var= "PermittedSatFlow", Y_Lab="Permitted Sat Flow",
+         tittleAddOn= "Permitted Sat Flow",MainDir=ResDir,fileNm="Permitted Sat Flow",range_y_ = [0,1600])
+
+PlotData(Data1 =FinDat1, Y_Var= "NumSneakerPerCycle", Y_Lab="NumSneakerPerCycle",
+         tittleAddOn= "NumSneakerPerCycle",MainDir=ResDir,fileNm="NumSneakerPerCycle",range_y_ = [0,6])
 
 
+PlotData(Data1 =FinDat1, Y_Var= "Capacity", Y_Lab="Capacity",
+         tittleAddOn= "Capacity",MainDir=ResDir,fileNm="Capacity",range_y_ = [0,1600])
 
 
-
+PlotData(Data1 =FinDat1, Y_Var= "Min_gp_gu", Y_Lab="Min_gp_gu",
+         tittleAddOn= "Min_gp_gu",MainDir=ResDir,fileNm="Min_gp_gu",range_y_ = [0,100])
 
 
 
