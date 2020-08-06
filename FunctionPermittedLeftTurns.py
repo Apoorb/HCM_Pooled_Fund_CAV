@@ -233,8 +233,6 @@ def ReLab(x):
         "100PerMPR": "100"}
     return (MprLab[x])
 
-
-
 def PlotData(Data1, Y_Var, Y_Lab, tittleAddOn, MainDir, fileNm="", range_y_=[0, 6]):
     '''
 
@@ -254,17 +252,18 @@ def PlotData(Data1, Y_Var, Y_Lab, tittleAddOn, MainDir, fileNm="", range_y_=[0, 
     Data1.rename(columns={Y_Var: Y_Lab, "Volumes": "Volume (Veh/hr)"}, inplace=True)
 
     MprCats = ["0", "20", "40", "60", "80", "100"]
-    GapCats = ['Conservative', 'Normal', 'Aggressive']
+    GapCats = ['Aggressive', 'Normal', 'Conservative']
     Data1.MPR = pd.Categorical(Data1.MPR, MprCats, ordered=True)
     Data1.PltSize = pd.Categorical(Data1.PltSize, [1, 5, 8], ordered=True)
     Data1.Gap = pd.Categorical(Data1.Gap, GapCats, ordered=True)
 
-    Data1 = Data1.sort_values(["Volume (Veh/hr)", "PltSize", "MPR", 'Gap'])
+    Data1 = Data1.sort_values(["Volume (Veh/hr)", "MPR", "PltSize", "Gap"])
     colorScale_Axb = ['rgb(210,210,210)', 'rgb(180,180,180)', 'rgb(120,120,120)', 'rgb(100,100,100)', 'rgb(60,60,60)',
                       'rgb(20,20,20)', 'rgb(0,0,0)']
 
     Data1.rename(columns={Y_Var: Y_Lab, "MPR": "CAV Market Penetration Rate (%)", "PltSize": "Platoon Size"},
                  inplace=True)
+
     Data1[Y_Lab] = Data1[Y_Lab].round(1)
     px.defaults.width = 900
     px.defaults.height = 800
@@ -298,7 +297,12 @@ def PlotData(Data1, Y_Var, Y_Lab, tittleAddOn, MainDir, fileNm="", range_y_=[0, 
             color="#7f7f7f"
         )
     )
-    plot(fig3, filename=os.path.join(MainDir, "Plt_{}.html".format(fileNm)), auto_open=True)
-    fig3.write_image(os.path.join(MainDir, "Plt_{}.jpg".format(fileNm)))
 
+    fig3.add_annotation(
+        x=0.5,
+        y=-0.18,
+        text="<i>Note: Intra-Platoon Gap is not relevant for ACC mode (Platoon Size 1 and Platoon Leaders). Vehicles have a Desired Gap of 1.5 seconds in ACC mode</i>")
+    fig3.update_annotations({'xref': "paper", 'yref': "paper", 'showarrow': False})
+    fig3.update_layout(showlegend=True)
+    plot(fig3, filename=os.path.join(MainDir, "Plt_{}.html".format(fileNm)), auto_open=False)
     return ()

@@ -113,6 +113,7 @@ TestDf.to_csv(os.path.join(ResDir,"TestData.csv"))
 
 FinDat1 = pd.read_csv(os.path.join(ResDir,"PermittedLeftTable.csv"))
 FinDat1 = FinDat1.query('Volumes<=1800')
+
 # -(3600/900)*np.log((628.713 * (1-np.exp(-900*2.5/3600)))/900)
 
 # Plot
@@ -121,7 +122,7 @@ PlotData(Data1=FinDat1, Y_Var="CriticalHeadway", Y_Lab="Critical Headway (sec)",
          tittleAddOn="CriticalHeadway", MainDir=ResDir, fileNm="CriticalHeadway", range_y_=[0, 6])
 
 PlotData(Data1=FinDat1, Y_Var="FollowUpHeadway", Y_Lab="Follow-Up Headway (sec)",
-         tittleAddOn="FollowUpHeadway", MainDir=ResDir, fileNm="FollowUpHeadway", range_y_=[0, 4])
+         tittleAddOn="FollowUpHeadway", MainDir=ResDir, fileNm="FollowUpHeadway", range_y_=[0, 6])
 
 PlotData(Data1=FinDat1, Y_Var="PermittedSatFlow", Y_Lab="Permitted Sat Flow",
          tittleAddOn="Permitted Sat Flow", MainDir=ResDir, fileNm="Permitted Sat Flow", range_y_=[0, 1600])
