@@ -1,125 +1,74 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="BookmarkManager">
-    <bookmark url="file://$PROJECT_DIR$/FunctionPermittedLeftTurns.py" line="58" />
-  </component>
   <component name="ChangeListManager">
-    <list default="true" id="08586552-f1e0-411a-a193-645e87b6d4a1" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FunctionPermittedLeftTurns.py" beforeDir="false" afterPath="$PROJECT_DIR$/FunctionPermittedLeftTurns.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PermittedLeftResultProcessing.py" beforeDir="false" afterPath="$PROJECT_DIR$/PermittedLeftResultProcessing.py" afterDir="false" />
+    <list default="true" id="08586552-f1e0-411a-a193-645e87b6d4a1" name="Default Changelist" comment="Switch to PyCharm">
+      <change beforePath="$PROJECT_DIR$/.idea/HCM_Pooled_Fund_CAV.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/R_User_Library.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/AutomateExperimentalDesignArterialSimulationRun.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/BruteForceRuns/AutomateExperimentalDesignArterialSimulationRun---PltSz-1.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/BruteForceRuns/AutomateExperimentalDesignArterialSimulationRun---PltSz-2.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/BruteForceRuns/AutomateExperimentalDesignArterialSimulationRun---PltSz-5.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/BruteForceRuns/AutomateExperimentalDesignArterialSimulationRun---PltSz-8.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/CleanCode_Process_DatCol_and_SigChange.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/CommonFunctions.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/FunctionPermittedLeftTurns.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Old/ResultProcessingAtDiffMPR.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Old/ScenarioManager/Plot_DataFrom_ResultsProcessingDiffMPR-ScManage.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Old/ScenarioManager/ResultProcessingAtDiffMPR-Gap-PltSz-ScManage.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Old/ScenarioManager/ScenarioManagerAutomateVissimRuns.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/OptimizeVissimParamUseCOM.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/PermittedLeftResultProcessing.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/PermittedScnManager-AutomateExperimentalDesignArterialSimulationRun.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plot_DataFrom_ResultsProcessingDiffMPR.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Process_DataCol_and_SigChange.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Process_DataCol_and_SigChange.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/Process_DataCol_and_SigChange.ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/QAQC_DataMapping.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/QueueLen_Vs_SatFlow.ipynb" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ResultProcessingAtDiffMPR-Gap-PltSz.py" beforeDir="false" />
     </list>
-    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="FavoritesManager">
-    <favorites_list name="HCM_Pooled_Fund_CAV" />
-  </component>
-  <component name="FileEditorManager">
-    <leaf>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/FunctionPermittedLeftTurns.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="186">
-              <caret line="58" column="32" lean-forward="true" selection-start-line="58" selection-start-column="32" selection-end-line="58" selection-end-column="32" />
-              <folding>
-                <element signature="e#87#106#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/PermittedLeftResultProcessing.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="103">
-              <caret line="75" column="31" lean-forward="true" selection-start-line="75" selection-start-column="31" selection-end-line="75" selection-end-column="31" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-    </leaf>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
+    <option name="PREVIOUS_COMMIT_AUTHORS">
+      <list>
+        <option value="Apoorba Bibeka &lt;apoorb2510@gmail.com&gt;" />
+      </list>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="SIGN_OFF_COMMIT" value="true" />
   </component>
-  <component name="IdeDocumentHistory">
-    <option name="CHANGED_PATHS">
-      <list>
-        <option value="$PROJECT_DIR$/AutomateExperimentalDesignArterialSimulationRun.py" />
-        <option value="$PROJECT_DIR$/../../NCHRP7-26/Sample Analysis/breakdown_probability_UFL.py" />
-        <option value="$PROJECT_DIR$/Plot_DataFrom_ResultsProcessingDiffMPR.py" />
-        <option value="$PROJECT_DIR$/FunctionPermittedLeftTurns.py" />
-        <option value="$PROJECT_DIR$/PermittedLeftResultProcessing.py" />
-      </list>
-    </option>
-  </component>
-  <component name="ProjectConfigurationFiles">
-    <option name="files">
-      <list>
-        <option value="$PROJECT_DIR$/.idea/HCM_Pooled_Fund_CAV.iml" />
-        <option value="$PROJECT_DIR$/.idea/misc.xml" />
-        <option value="$PROJECT_DIR$/.idea/vcs.xml" />
-        <option value="$PROJECT_DIR$/.idea/modules.xml" />
-        <option value="$PROJECT_DIR$/.idea/libraries/R_User_Library.xml" />
-      </list>
-    </option>
-  </component>
-  <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="2299" />
-    <option name="y" value="217" />
-    <option name="width" value="1120" />
-    <option name="height" value="800" />
-  </component>
+  <component name="ProjectId" id="1decY0ZZAjeS8wJ01KUBLsnhJrJ" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
-  <component name="ProjectView">
-    <navigator proportions="" version="1">
-      <foldersAlwaysOnTop value="true" />
-    </navigator>
-    <panes>
-      <pane id="ProjectPane">
-        <subPane>
-          <expand>
-            <path>
-              <item name="HCM_Pooled_Fund_CAV" type="b2602c69:ProjectViewProjectNode" />
-              <item name="HCM_Pooled_Fund_CAV" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="HCM_Pooled_Fund_CAV" type="b2602c69:ProjectViewProjectNode" />
-              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
-            </path>
-          </expand>
-          <select />
-        </subPane>
-      </pane>
-      <pane id="Scope" />
-    </panes>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
-    <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
+    <property name="TODO_SCOPE" value="All Places" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../LPGA-VISSIM-DataProcessing" />
+    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="PyConsoleOptionsProvider">
     <option name="myPythonConsoleState">
       <console-settings>
         <option name="useSoftWraps" value="true" />
       </console-settings>
-    </option>
-  </component>
-  <component name="RunDashboard">
-    <option name="ruleStates">
-      <list>
-        <RuleState>
-          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
-        </RuleState>
-        <RuleState>
-          <option name="name" value="StatusDashboardGroupingRule" />
-        </RuleState>
-      </list>
     </option>
   </component>
   <component name="RunManager" selected="Python.PermittedLeftResultProcessing">
@@ -205,9 +154,17 @@
       <option name="presentableId" value="Default" />
       <updated>1585747147922</updated>
     </task>
+    <task id="LOCAL-00001" summary="Switch to PyCharm">
+      <created>1590685587715</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1590685587715</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
-  <component name="TodoView" selected-index="3">
+  <component name="TodoView" selected-index="2">
     <todo-panel id="selected-file">
       <is-autoscroll-to-source value="true" />
     </todo-panel>
@@ -216,58 +173,91 @@
       <is-autoscroll-to-source value="true" />
     </todo-panel>
   </component>
-  <component name="ToolWindowManager">
-    <frame x="1912" y="-8" width="1936" height="1056" extended-state="6" />
-    <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49933246" weight="0.10475162" />
-      <window_info id="Structure" order="1" sideWeight="0.50133336" side_tool="true" weight="0.22252156" />
-      <window_info id="Favorites" order="2" sideWeight="0.50166667" side_tool="true" weight="0.22156653" />
-      <window_info anchor="bottom" id="Message" order="0" />
-      <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49946004" weight="0.49520382" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.37529975" />
-      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
-      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
-      <window_info anchor="bottom" id="TODO" order="6" weight="0.32853717" />
-      <window_info anchor="bottom" id="Version Control" order="7" weight="0.053956833" />
-      <window_info anchor="bottom" id="Terminal" order="8" weight="0.3273743" />
-      <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.5010799" side_tool="true" weight="0.44484413" />
-      <window_info active="true" anchor="bottom" id="Python Console" order="10" sideWeight="0.49892008" visible="true" weight="0.64868104" />
-      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
-      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
-      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
-      <window_info anchor="right" id="R Graphics" order="3" weight="0.024298057" />
-      <window_info anchor="right" id="R Packages" order="4" weight="0.3299356" />
-    </layout>
-  </component>
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">
       <map>
         <entry key="MAIN">
           <value>
-            <State>
-              <option name="RECENTLY_FILTERED_USER_GROUPS">
-                <collection />
-              </option>
-              <option name="RECENTLY_FILTERED_BRANCH_GROUPS">
-                <collection />
-              </option>
-              <option name="COLUMN_ORDER">
-                <list>
-                  <option value="0" />
-                  <option value="1" />
-                  <option value="2" />
-                  <option value="3" />
-                </list>
-              </option>
-            </State>
+            <State />
           </value>
         </entry>
       </map>
     </option>
+    <option name="RECENT_FILTERS">
+      <map>
+        <entry key="Branch">
+          <value>
+            <list />
+          </value>
+        </entry>
+        <entry key="User">
+          <value>
+            <list />
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Switch to PyCharm" />
+    <option name="LAST_COMMIT_MESSAGE" value="Switch to PyCharm" />
+    <option name="MAKE_NEW_CHANGELIST_ACTIVE" value="true" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="2197" y="0" key="CommitChangelistDialog2" timestamp="1592874478436">
+      <screen x="1920" y="0" width="1920" height="1040" />
+    </state>
+    <state x="2197" y="0" key="CommitChangelistDialog2/0.0.1536.824/1920.0.1920.1040@1920.0.1920.1040" timestamp="1592874478436" />
+    <state x="2426" y="0" key="FileChooserDialogImpl" timestamp="1594131127455">
+      <screen x="1920" y="0" width="1536" height="824" />
+    </state>
+    <state x="422" y="0" key="FileChooserDialogImpl/0.0.1280.680/1920.0.1536.824@0.0.1280.680" timestamp="1594131091128" />
+    <state x="2426" y="0" key="FileChooserDialogImpl/0.0.1280.680/1920.0.1536.824@1920.0.1536.824" timestamp="1594131127455" />
+    <state x="2553" y="154" key="FileChooserDialogImpl/0.0.1536.824/1920.0.1920.1040@1920.0.1920.1040" timestamp="1592920843334" />
+    <state x="633" y="154" key="FileChooserDialogImpl/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1594061048727" />
+    <state x="2138" y="0" key="SettingsEditor" timestamp="1592789337341">
+      <screen x="1920" y="0" width="1920" height="1040" />
+    </state>
+    <state x="2138" y="0" key="SettingsEditor/0.0.1536.824/1920.0.1920.1040@1920.0.1920.1040" timestamp="1592789337341" />
+    <state x="2465" y="135" width="810" height="786" key="StructurePopup" timestamp="1592874598973">
+      <screen x="1920" y="0" width="1920" height="1040" />
+    </state>
+    <state x="2465" y="135" width="810" height="786" key="StructurePopup/0.0.1536.824/1920.0.1920.1040@1920.0.1920.1040" timestamp="1592874598973" />
+    <state width="968" height="596" key="SwitcherDM" timestamp="1592874441007">
+      <screen x="1920" y="0" width="1920" height="1040" />
+    </state>
+    <state width="968" height="596" key="SwitcherDM/0.0.1536.824/1920.0.1920.1040@1920.0.1920.1040" timestamp="1592874441007" />
+    <state x="2592" y="388" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1592874418618">
+      <screen x="1920" y="0" width="1920" height="1040" />
+    </state>
+    <state x="2592" y="388" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1536.824/1920.0.1920.1040@1920.0.1920.1040" timestamp="1592874418618" />
+    <state x="2232" y="115" key="com.intellij.xdebugger.impl.breakpoints.ui.BreakpointsDialogFactory$2" timestamp="1592874654331">
+      <screen x="1920" y="0" width="1920" height="1040" />
+    </state>
+    <state x="2232" y="115" key="com.intellij.xdebugger.impl.breakpoints.ui.BreakpointsDialogFactory$2/0.0.1536.824/1920.0.1920.1040@1920.0.1920.1040" timestamp="1592874654331" />
+    <state width="703" height="455" key="javadoc.popup.new" timestamp="1592874404373">
+      <screen x="1920" y="0" width="1920" height="1040" />
+    </state>
+    <state width="703" height="455" key="javadoc.popup.new/0.0.1536.824/1920.0.1920.1040@1920.0.1920.1040" timestamp="1592874404373" />
+    <state x="2647" y="215" key="refactoring.ChangeSignatureDialog" timestamp="1592874623226">
+      <screen x="1920" y="0" width="1920" height="1040" />
+    </state>
+    <state x="2647" y="215" key="refactoring.ChangeSignatureDialog/0.0.1536.824/1920.0.1920.1040@1920.0.1920.1040" timestamp="1592874623226" />
+    <state x="2373" y="-2" key="search.everywhere.popup" timestamp="1592874496687">
+      <screen x="1920" y="0" width="1920" height="1040" />
+    </state>
+    <state x="2373" y="-2" key="search.everywhere.popup/0.0.1536.824/1920.0.1920.1040@1920.0.1920.1040" timestamp="1592874496687" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/PermittedLeftResultProcessing.py</url>
+          <line>22</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
       <default-breakpoints>
         <breakpoint type="python-exception">
           <properties notifyOnTerminate="true" exception="BaseException">
@@ -281,108 +271,5 @@
         <watch expression="DatColDatEBL_FollowUp" language="Python" />
       </configuration>
     </watches-manager>
-  </component>
-  <component name="debuggerHistoryManager">
-    <expressions id="breakpointCondition">
-      <expression>
-        <expression-string>RunNum==1</expression-string>
-        <language-id>Python</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>RunNum==10</expression-string>
-        <language-id>Python</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>if run==8</expression-string>
-        <language-id>Python</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-    </expressions>
-    <expressions id="watch">
-      <expression>
-        <expression-string>DatColDatEBL_FollowUp</expression-string>
-        <language-id>Python</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-    </expressions>
-  </component>
-  <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/AutomateExperimentalDesignArterialSimulationRun.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-132">
-          <caret line="6" selection-start-line="6" selection-end-line="6" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/PermittedScnManager-AutomateExperimentalDesignArterialSimulationRun.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$USER_HOME$/AppData/Local/Continuum/anaconda3/Lib/site-packages/xlrd/__init__.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="343">
-          <caret line="118" column="57" selection-start-line="118" selection-start-column="57" selection-end-line="118" selection-end-column="57" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../../NCHRP7-26/Sample Analysis/breakdown_probability_UFL.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="310">
-          <caret line="539" column="16" selection-end-line="557" />
-          <folding>
-            <element signature="e#41#72#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Plot_DataFrom_ResultsProcessingDiffMPR.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-471">
-          <caret line="35" column="34" lean-forward="true" selection-start-line="35" selection-start-column="34" selection-end-line="35" selection-end-column="34" />
-          <folding>
-            <element signature="e#484#503#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Process_DataCol_and_SigChange.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="176">
-          <caret line="71" column="2" lean-forward="true" selection-start-line="71" selection-start-column="2" selection-end-line="71" selection-end-column="2" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/AppData/Local/Continuum/anaconda3/Lib/site-packages/IPython/core/interactiveshell.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1133">
-          <caret line="3330" selection-start-line="3330" selection-end-line="3330" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/AppData/Local/Continuum/anaconda3/Lib/site-packages/numpy/core/fromnumeric.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-45">
-          <caret line="60" selection-start-line="60" selection-end-line="60" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/FunctionPermittedLeftTurns.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="186">
-          <caret line="58" column="32" lean-forward="true" selection-start-line="58" selection-start-column="32" selection-end-line="58" selection-end-column="32" />
-          <folding>
-            <element signature="e#87#106#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/PermittedLeftResultProcessing.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="103">
-          <caret line="75" column="31" lean-forward="true" selection-start-line="75" selection-start-column="31" selection-end-line="75" selection-end-column="31" />
-        </state>
-      </provider>
-    </entry>
   </component>
 </project>

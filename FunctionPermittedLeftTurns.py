@@ -116,7 +116,7 @@ def GetFollowUpHeadway(DatColDat, SigDat, VolumeMap):
     DatColDatEBL_FollowUp1 = DatColDatEBL_FollowUp.groupby(['TimeIntevals'])['FollowUpHeadway'].mean().reset_index()
     DatColDatEBL_FollowUp1 = DatColDatEBL_FollowUp1.merge(VolumeMap, left_on="TimeIntevals", right_on="TimeIntevals",
                                                           how="outer")
-    return [DatColDatEBL_FollowUp1,DatColDatEBL_FollowUp]
+    return [DatColDatEBL_FollowUp1, DatColDatEBL_FollowUp]
 
 
 def GetTotalSneaker(DatColDat, SigDat, VolumeMap):
@@ -219,7 +219,7 @@ def ReLab_Gap(x):
         "0.6": "Aggressive",
         "Normal": "Normal",
         "1.1": "Conservative",
-        "1.2": "Normal"}
+        "1.2": "Conservative"}
     return (GapLab[x])
 
 
@@ -232,6 +232,7 @@ def ReLab(x):
         "80PerMPR": "80",
         "100PerMPR": "100"}
     return (MprLab[x])
+
 
 
 def PlotData(Data1, Y_Var, Y_Lab, tittleAddOn, MainDir, fileNm="", range_y_=[0, 6]):
@@ -253,30 +254,51 @@ def PlotData(Data1, Y_Var, Y_Lab, tittleAddOn, MainDir, fileNm="", range_y_=[0, 
     Data1.rename(columns={Y_Var: Y_Lab, "Volumes": "Volume (Veh/hr)"}, inplace=True)
 
     MprCats = ["0", "20", "40", "60", "80", "100"]
-    GapCats = ['Conservative','Normal','Aggressive']
+    GapCats = ['Conservative', 'Normal', 'Aggressive']
     Data1.MPR = pd.Categorical(Data1.MPR, MprCats, ordered=True)
     Data1.PltSize = pd.Categorical(Data1.PltSize, [1, 5, 8], ordered=True)
     Data1.Gap = pd.Categorical(Data1.Gap, GapCats, ordered=True)
 
-    Data1 = Data1.sort_values(["Volume (Veh/hr)", "MPR",'Gap', "PltSize"])
+    Data1 = Data1.sort_values(["Volume (Veh/hr)", "PltSize", "MPR", 'Gap'])
     colorScale_Axb = ['rgb(210,210,210)', 'rgb(180,180,180)', 'rgb(120,120,120)', 'rgb(100,100,100)', 'rgb(60,60,60)',
                       'rgb(20,20,20)', 'rgb(0,0,0)']
 
     Data1.rename(columns={Y_Var: Y_Lab, "MPR": "CAV Market Penetration Rate (%)", "PltSize": "Platoon Size"},
                  inplace=True)
-
+    Data1[Y_Lab] = Data1[Y_Lab].round(1)
+    px.defaults.width = 900
+    px.defaults.height = 800
     fig3: object = px.scatter(Data1, x="Volume (Veh/hr)", y=Y_Lab, color="CAV Market Penetration Rate (%)",
                               facet_col="Gap",
                               facet_row="Platoon Size", symbol="CAV Market Penetration Rate (%)",
                               symbol_map={"0": "circle", '20': "diamond", '40': "x", "60": "triangle-up", "80": "star",
-                                          "100": "square"}
+                                          "100": "square"},
+                              category_orders={"Gap": ['Conservative', 'Normal', 'Aggressive'],
+                                               "Platoon Size": [1, 5, 8]}
                               , template="plotly_white", range_y=range_y_
                               , title=f'{tittleAddOn}')
-    fig3.add_annotation(
-        x=0.5,
-        y=-0.18,
-        text="<i>Note: Intra-Platoon Gap is not relevant for ACC mode (Platoon Size 1 and Platoon Leaders). Vehicles have a Desired Gap of 1.5 seconds in ACC mode</i>")
-    fig3.update_annotations({'xref': "paper", 'yref': "paper", 'showarrow': False})
-    fig3.update_layout(showlegend=True)
-    plot(fig3, filename=os.path.join(MainDir, "Plt_{}.html".format(fileNm)), auto_open=False)
+    # fig3.add_annotation(
+    #     x=0.5,
+    #     y=-0.15,
+    #     text="<i>Note: Intra-Platoon Gap is not relevant for ACC mode (Platoon Size 1 and Platoon Leaders). Vehicles have a Desired Gap of 1.5 seconds in ACC mode</i>")
+    # fig3.update_annotations({'xref': "paper", 'yref': "paper", 'showarrow': False})
+    fig3.update_layout(showlegend=True,  font=dict(size=12))
+#https://stackoverflow.com/questions/58167028/single-axis-caption-in-plotly-express-facet-plot
+    for axis in fig3.layout:
+        if type(fig3.layout[axis]) == go.layout.YAxis:
+            fig3.layout[axis].title.text = ''
+    fig3['layout']['yaxis4']['title']['text'] = Y_Lab
+    fig3['layout']['xaxis']['title']['text'] = ''
+    fig3['layout']['xaxis3']['title']['text'] = ''
+    fig3.update_xaxes(tickvals=[600, 900, 1200, 1500, 1800])
+    fig3.update_layout(
+        font=dict(
+            family="Courier New, monospace",
+            size=18,
+            color="#7f7f7f"
+        )
+    )
+    plot(fig3, filename=os.path.join(MainDir, "Plt_{}.html".format(fileNm)), auto_open=True)
+    fig3.write_image(os.path.join(MainDir, "Plt_{}.jpg".format(fileNm)))
+
     return ()
