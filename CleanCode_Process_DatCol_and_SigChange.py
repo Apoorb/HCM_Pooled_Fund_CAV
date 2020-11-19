@@ -6,8 +6,9 @@ Purpose : Signal timing and data col ---Calibration
 """
 
 
-#0.0 Housekeeping. Clear variable space
-from IPython import get_ipython  #run magic commands
+# 0.0 Housekeeping. Clear variable space
+from IPython import get_ipython  # run magic commands
+
 ipython = get_ipython()
 ipython.magic("reset -f")
 ipython = get_ipython()
@@ -17,7 +18,10 @@ ipython = get_ipython()
 import pandas as pd
 import os
 import sys
-sys.path.append(r'C:\Users\abibeka\OneDrive - Kittelson & Associates, Inc\Documents\Github\HCM_Pooled_Fund_CAV')
+
+sys.path.append(
+    r"C:\Users\abibeka\OneDrive - Kittelson & Associates, Inc\Documents\Github\HCM_Pooled_Fund_CAV"
+)
 from CommonFunctions import ProcessSigTime
 from CommonFunctions import ProcessDatCol
 from CommonFunctions import MergeDatCol_SigDat
@@ -33,29 +37,31 @@ from scipy.stats import sem, t
 from scipy import mean
 from scipy import stats
 import subprocess
-#os.chdir(r'H:\22\22398 - CAV in HCM Pooled Fund Study\Task4-ScenarioTesting\Base VISSIM Models\Arterial_Model\VissimBaseModel')
-os.chdir(r'C:\Users\abibeka\OneDrive - Kittelson & Associates, Inc\Documents\HCM-CAV-Pooled-Fund\VissimBaseModel')
+
+# os.chdir(r'H:\22\22398 - CAV in HCM Pooled Fund Study\Task4-ScenarioTesting\Base VISSIM Models\Arterial_Model\VissimBaseModel')
+os.chdir(
+    r"C:\Users\abibeka\OneDrive - Kittelson & Associates, Inc\Documents\HCM-CAV-Pooled-Fund\VissimBaseModel"
+)
 os.getcwd()
 MainDir = os.getcwd()
 
 
-
 # Get the Run # and the File
-#****************************************************************************************************************************
+# ****************************************************************************************************************************
 IsResForBase = False
 if IsResForBase:
-    SigFiles = glob('VissimBaseModel_Calibration-DefaultParam*.lsa')
+    SigFiles = glob("VissimBaseModel_Calibration-DefaultParam*.lsa")
 else:
-    SigFiles = glob('VissimBaseModel_Calibration - V2*.lsa')
+    SigFiles = glob("VissimBaseModel_Calibration - V2*.lsa")
 
-map1 = lambda x: x.split('_')[-1].split('.')[0]
+map1 = lambda x: x.split("_")[-1].split(".")[0]
 SigFileNos = list(map(map1, SigFiles))
 SigFilesDict = dict(zip(SigFileNos, SigFiles))
 
 if IsResForBase:
-    DatColFiles = glob('VissimBaseModel_Calibration-DefaultParam*.mer')
+    DatColFiles = glob("VissimBaseModel_Calibration-DefaultParam*.mer")
 else:
-    DatColFiles = glob('VissimBaseModel_Calibration - V2_*.mer')
+    DatColFiles = glob("VissimBaseModel_Calibration - V2_*.mer")
 
 
 DatColNos = list(map(map1, DatColFiles))
@@ -64,43 +70,45 @@ DatColFilesDict = dict(zip(DatColNos, DatColFiles))
 file = SigFiles[0]
 
 file = DatColFiles[0]
-#****************************************************************************************************************************
-LaneDict = {1:'EBT/R', 2:'EBT', 3:"EBL"}
+# ****************************************************************************************************************************
+LaneDict = {1: "EBT/R", 2: "EBT", 3: "EBL"}
 ListRes = []
 SigDataDict = {}
 DataColDataDict = {}
 RawDataDict = {}
 RawDataDict2 = {}
-for RunNum,SigVal in SigFilesDict.items():
-    print(RunNum,SigVal,DatColFilesDict[RunNum])
-    SigDat = ProcessSigTime(SigVal) 
+for RunNum, SigVal in SigFilesDict.items():
+    print(RunNum, SigVal, DatColFilesDict[RunNum])
+    SigDat = ProcessSigTime(SigVal)
     SigDataDict[RunNum] = SigDat
-    DatColDat = ProcessDatCol(DatColFilesDict[RunNum],LaneDict)
+    DatColDat = ProcessDatCol(DatColFilesDict[RunNum], LaneDict)
     DataColDataDict[RunNum] = DatColDat
-    tempDat = MergeDatCol_SigDat(SigDat, DatColDat ,LaneDict, StartVeh = 4, EndVeh =14, RunNum = RunNum)
+    tempDat = MergeDatCol_SigDat(
+        SigDat, DatColDat, LaneDict, StartVeh=4, EndVeh=14, RunNum=RunNum
+    )
     ListRes.append(tempDat[0])
     RawDataDict[RunNum] = tempDat[1]
     RawDataDict2[RunNum] = tempDat[2]
-    RawDataDict[RunNum].loc[:,"RunNo"] = RunNum
-    RawDataDict2[RunNum].loc[:,"RunNo"] = RunNum
-    
-RawDat= pd.concat(RawDataDict.values())
-RawDat2= pd.concat(RawDataDict2.values())
-#****************************************************************************************************************************
+    RawDataDict[RunNum].loc[:, "RunNo"] = RunNum
+    RawDataDict2[RunNum].loc[:, "RunNo"] = RunNum
+
+RawDat = pd.concat(RawDataDict.values())
+RawDat2 = pd.concat(RawDataDict2.values())
+# ****************************************************************************************************************************
 FinDat = pd.concat(ListRes)
 FinDat = FinDat.sort_index()
-FinDat = FinDat.reset_index().set_index(['LaneDesc','RunNum']).sort_index()
+FinDat = FinDat.reset_index().set_index(["LaneDesc", "RunNum"]).sort_index()
 FinDat.columns
-FinDatSatFlow = FinDat.groupby(['LaneDesc'])['SatFlow'].describe()
+FinDatSatFlow = FinDat.groupby(["LaneDesc"])["SatFlow"].describe()
 
 # Get a list of sat flow rates
-VISSIM_Val = FinDatSatFlow.loc['EBT','mean']
+VISSIM_Val = FinDatSatFlow.loc["EBT", "mean"]
 Target_Val = 1900
-SatFlowVals = np.array(FinDat.loc['EBT','SatFlow'].values)
+SatFlowVals = np.array(FinDat.loc["EBT", "SatFlow"].values)
 
 # Statistical Testing
 sms.DescrStatsW(SatFlowVals).tconfint_mean()
-stats.ttest_1samp(SatFlowVals, 1900 )
+stats.ttest_1samp(SatFlowVals, 1900)
 
 # Output data
 if IsResForBase:
@@ -109,13 +117,12 @@ else:
     OutFi = "Results/Calib_HeadwaySatFlowRes.xlsx"
 
 
-writer=pd.ExcelWriter(OutFi)
-RawDat.to_excel(writer, 'RawData',na_rep='-')
-FinDat.to_excel(writer, 'HeadwaySatFlowSummary',na_rep='-')
-FinDatSatFlow.to_excel(writer, 'SatFlowByRun',na_rep='-')
+writer = pd.ExcelWriter(OutFi)
+RawDat.to_excel(writer, "RawData", na_rep="-")
+FinDat.to_excel(writer, "HeadwaySatFlowSummary", na_rep="-")
+FinDatSatFlow.to_excel(writer, "SatFlowByRun", na_rep="-")
 
-writer.save() #****************************************************************************************************************************
+writer.save()  # ****************************************************************************************************************************
 
 OutFi = os.path.join(MainDir, OutFi)
-subprocess.Popen([OutFi],shell=True)  
-
+subprocess.Popen([OutFi], shell=True)
